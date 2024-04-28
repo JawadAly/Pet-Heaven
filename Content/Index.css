@@ -1,0 +1,193 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {
+    background-color: #f5f5f5;
+}
+section{
+    width: 100%;
+    min-height: 80vh;
+    background-color: #f5f5f5;
+}
+
+/* nav-section-css */
+.navbar{
+    width: 100%;
+    height: 65px;
+    background: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+}
+.navLogo a{
+    text-decoration: none;
+    cursor: pointer;
+    color: #454545;
+}
+.navUl li{
+    margin-right: 44px;
+    list-style-type: none;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.navUl li a{
+    text-decoration: none;
+    color: #454545;
+    cursor: pointer;
+}
+.navSideBarBtn{
+    width: 35px;
+    height: 35px;
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    z-index: 1100;
+}
+.upperLine,
+.middleLine,
+.lowerLine{
+    width: 25px;
+    height: 2px;
+    background-color: #454545;
+    border-radius: 20px;
+    margin-bottom: 4px;
+}
+/* nav-section-css */
+
+/* banner-section-css */
+.banner-section{
+    margin-top: 65px;
+}
+.bannerHolder{
+    min-height: 80vh;
+}
+.headLineText{
+    font-size: 45px;
+    font-weight: 900;
+}
+.bannerGiph{
+    mix-blend-mode: multiply;
+}
+/* banner-section-css */
+
+/* categorize-Section-css */
+.categorizeHolder{
+    min-height: 80vh;
+}
+.categCard{
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 2px;
+    border: 1px solid lightseagreen;
+    position: relative;
+    overflow: hidden;
+}
+.categCard img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    object-position: center;
+}
+.overLay{
+    width: 190px;
+    height: 190px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition-duration: 1s;
+    opacity: 0.8;
+}
+.categCard:hover .overLay{
+    top: 0;
+}
+/* categorize-Section-css */
+
+/* customer-reviews-section */
+.reviewsHolder{
+    min-height: 80vh;
+}
+.reviewCard{
+    width: 270px;
+    min-height: 190px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 8px;
+    position: relative;
+    overflow: hidden;
+}
+.reviewPersImg{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+/* customer-reviews-section */
+
+.footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0; 
+    background-color: #fff;
+    height: 40px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #454545;
+}
+@media only screen and (max-width:768px){
+    .sideBar{
+        position: fixed;
+        top: 0;
+        transform: translateX(320px) !important;
+        right: 0;
+        bottom: 0;
+        width: 320px;
+        background-color: bisque;
+        z-index: 1000;
+        transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition-duration: 1s;
+        
+    }
+    .navUl{
+        flex-direction: column;
+        margin-top: 27%;
+    }
+    .navUl li{
+        margin-bottom: 80px;
+        margin-left: 10px;
+        border-bottom: 1px solid grey;
+    }
+    .navSideBarBtn{
+        display: block !important;
+        top: 25px;
+        right: 20px;
+    }
+    .checkBoxSider:checked ~ .sideBar{
+        transform: translateX(0px) !important;
+    }
+    .bannerHolder{
+        flex-direction: column-reverse;
+    }
+    .bannerTagLinesArea{
+        padding-bottom: 23px;
+    }
+    .banner-section{
+        margin-top: 50px;
+    }
+    .categoriesHeading{
+        margin-bottom: 45px;
+    }
+}
+
+
