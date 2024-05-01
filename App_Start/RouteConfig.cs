@@ -18,6 +18,13 @@ namespace Pet_Adoption_System
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+            name: "Admin",
+            url: "{controller}/{action}/{id}",
+            defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
+            ).DataTokens["UseNamespaceFallback"] = false;
+
         }
     }
 }

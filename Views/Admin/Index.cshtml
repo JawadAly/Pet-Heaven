@@ -1,0 +1,184 @@
+﻿@{ Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+@{
+    ViewBag.Title = "AdminPanel";
+}
+
+<div class="main">
+
+    <!-- ==================Top-Bar=============== -->
+
+    <div class="top-bar">
+        <div class="toggle">
+            <i class="fa-solid fa-bars fs-2"></i>
+        </div>
+        <div class="search">
+            <input type="text" class="form-control" placeholder="Search here">
+            <label for="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </label>
+        </div>
+        <div class="user">
+            <img src="assets/images/person_1.jpg" alt="">
+        </div>
+    </div>
+
+    <!-- ==================Cards-Section============== -->
+
+    <div class="cards-holder my-1">
+        <div class="card">
+            <div class="card-upper d-flex justify-content-between align-items-center">
+                <h1 class="number">2,209</h1>
+                <div class="icons"><i class="fa-solid fa-eye"></i></div>
+            </div>
+            <div class="card-title">
+                Daily Views
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-upper d-flex justify-content-between align-items-center">
+                <h1 class="number">1,199</h1>
+                <div class="icons"><i class="fa-solid fa-eye"></i></div>
+            </div>
+            <div class="card-title">
+                Products
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-upper d-flex justify-content-between align-items-center">
+                <h1 class="number">809</h1>
+                <div class="icons"><i class="fa-solid fa-eye"></i></div>
+            </div>
+            <div class="card-title">
+                Orders
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-upper d-flex justify-content-between align-items-center">
+                <h1 class="number">1200</h1>
+                <div class="icons"><i class="fa-solid fa-eye"></i></div>
+            </div>
+            <div class="card-title">
+                Payments
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================Details-Section============= -->
+
+    <div class="details">
+        <div class="orders-area">
+            <div class="orders-header d-flex justify-content-between align-items-center">
+                <h2 class="order-title">Recent Orders</h2>
+                <a href="" class="btn btn-primary rounded-pill order-btn">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table my-5">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+
+                        <tr>
+                            <td>Hp Laser Printer</td>
+                            <td>$250</td>
+                            <td>Paid</td>
+                            <td>Delivered</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="clients">
+            <h3 class="order-title">Recent Customers</h3>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                            <div class="text-secondary ps-3">Sara</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                            <div class="text-secondary ps-3">Sara</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                            <div class="text-secondary ps-3">Sara</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                            <div class="text-secondary ps-3">Sara</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                            <div class="text-secondary ps-3">Sara</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer w-100 p-3 fixed-bottom bg-dark">
+        <p class="text-center text-white">Copyright © 2022 | Js-Dev . All rights Reserved .</p>
+    </div>
+
+</div>

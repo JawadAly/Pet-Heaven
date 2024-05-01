@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Pet Heaven</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="~/Content/adminPanel.css" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <div class="my-container">
+
+        <!-- nav -->
+        <div class="navigation">
+            <ul class="ul">
+                <li class="mt-1 logo-li">
+                    <a href="" class="no-hover">
+                        <span><i class="fa-brands fa-apple brand-logo"></i></span>
+                        <div class="title fw-bolder"> Brand </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-house"></i></span>
+                        <div class="title"> @Html.ActionLink("Categories", "Categories", "Admin") </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-users"></i></span>
+                        <div class="title"> Customers </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-comments"></i></span>
+                        <div class="title"> Messages </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-circle-info"></i></span>
+                        <div class="title"> Help </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-unlock"></i></span>
+                        <div class="title"> Settings </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-unlock"></i></span>
+                        <div class="title"> Password </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                        <div class="title"> Sign Out </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+
+        @RenderBody()
+    </div>
+
+
+
+    <!-- footer -->
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    @Scripts.Render("~/Scripts/adminPanel.js")
+    @*@RenderSection("scripts", required: false)*@
+</body>
+</html>
+
