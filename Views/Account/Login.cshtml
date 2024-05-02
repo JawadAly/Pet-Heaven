@@ -2,23 +2,27 @@
 @{
     ViewBag.Title = "Account";
 }
-
+@Html.Raw(TempData["message"])
 @*<h2>Login</h2>*@
 <section class="loginSec">
     <div class="container">
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
         <div class="loginHolder d-flex align-items-center justify-content-center w-100">
             <form class="form">
                 <label for="text" class="label">UserId:</label>
-                <input type="text" id="text" class="input" placeholder="Enter User Id">
+                <input type="text" id="text" name="userName" class="input" placeholder="Enter User Id">
                 <label for="password" class="label">Password:</label>
-                <input type="password" id="password" class="input" placeholder="Enter Password">
+                <input type="password" name="userPass" id="password" class="input" placeholder="Enter Password">
 
                 <div class="centerer text-center w-100">
-                    <button type="button" class="button">Login</button>
+                    <button type="submit" class="button">Login</button>
                 </div>
                 <div class="d-flex align-items-center justify-content-between mt-3">
                     <div class="register">
-                        <a class="anchor">@Html.ActionLink("Create Account", "Register","Account") </a>
+                        <a class="anchor">@Html.ActionLink("Create Account", "Register", "Account") </a>
                     </div>
 
                     <div class="register2">
@@ -27,7 +31,7 @@
                 </div>
             </form>
         </div>
-
+        }
     </div>
 </section>
 

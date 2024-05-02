@@ -9,6 +9,7 @@ using Pet_Adoption_System.DbConnection;
 using System.Web.WebSockets;
 using Pet_Adoption_System.Models;
 using System.Data;
+using System.Web.ModelBinding;
 
 namespace Pet_Adoption_System.Controllers
 {
@@ -23,6 +24,44 @@ namespace Pet_Adoption_System.Controllers
         }
         public ActionResult Login()
         {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(User user)
+        {
+            if (user.userName == string.Empty || user.userPass == string.Empty)
+            {
+                TempData["message"] = "<script> alert('Please fill out the required fields!')  <script>";
+            }
+            else {
+                conn = provider.getConnection();
+                conn.Open();
+                sqcmd = new SqlCommand("SELECT userId,userName,userPass,userType FROM Users_tbl WHERE userName = @USERNAME AND userPass = @USERPASS", conn);
+                sqcmd.Parameters.AddWithValue("@USERNAME",user.userName);
+                sqcmd.Parameters.AddWithValue("@USERPASS",user.userPass);
+                SqlDataReader sdr = sqcmd.ExecuteReader();
+                if (sdr.Read())
+                {
+                    user.userType = Convert.ToInt32(sdr["userType"]);
+                    user.userId = Convert.ToInt32(sdr["userId"]);
+                    if (user.userType == 0)
+                    {
+                        //TempData["userInfo"] = user;
+                        Session["userInfo"] = user;
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else {
+                        //TempData["userInfo"] = user;
+                        Session["userInfo"] = user;
+                        return RedirectToAction("Index","Admin");
+                    }
+                }
+                else {
+                    TempData["message"] = "<script> alert('Invalid Credentials!')  <script>";
+                }
+                conn.Close();
+            }
+            
             return View();
         }
         public ActionResult Register() {
@@ -49,7 +88,7 @@ namespace Pet_Adoption_System.Controllers
             TempData["message"] = "<script> alert('Customer Registered Successfuly!')  <script>";
             return RedirectToAction("Login");
         }
-
+        
 
     }
 }

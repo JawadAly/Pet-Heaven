@@ -17,5 +17,10 @@ namespace Pet_Adoption_System.Controllers
            return View();  
         }
 
+        public ActionResult Pets()
+        {
+            return View();
+        }
+
     }
 }

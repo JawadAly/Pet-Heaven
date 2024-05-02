@@ -1,6 +1,7 @@
 ﻿            
 @{
     ViewBag.Title = "Home";
+    //var userData = TempData["userInfo"] as Pet_Adoption_System.Models.User;
 }
 
 @*<h2>Index</h2>*@
@@ -12,6 +13,9 @@
             <div class="bannerTagLinesArea">
                 <h1 class="headLineText">The love you Rescue,<br> Rescues you right back!</h1>
                 <button class="btn btn-warning mt-2">Find Your Match!</button>
+                @*@if(userData != null){
+                    <h2>@userData.userId <br> @userData.userName</h2>
+                }*@
             </div>
             <div class="giphArea p-5">
                 <img src="~/images/a426653d052246e2d4d18ab8c7f933c6.gif" class="img-fluid bannerGiph" alt="bannerImg">

@@ -6,11 +6,14 @@
     <title>@ViewBag.Title - Pet Heaven</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/Content/adminPanel.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-
+    @{ 
+        Pet_Adoption_System.Models.User adminData = Session["userInfo"] as Pet_Adoption_System.Models.User;
+    }
     <div class="my-container">
 
         <!-- nav -->
@@ -31,7 +34,7 @@
                 <li>
                     <a href="">
                         <span><i class="fa-solid fa-users"></i></span>
-                        <div class="title"> Customers </div>
+                        <div class="title"> @Html.ActionLink("Pets", "Pets", "Admin") </div>
                     </a>
                 </li>
                 <li>
@@ -69,19 +72,51 @@
 
         </div>
 
+        <div class="main">
+            <!-- ==================Top-Bar=============== -->
 
-        @RenderBody()
-    </div>
+            <div class="top-bar">
+                <div class="toggle">
+                    <i class="fa-solid fa-bars fs-2"></i>
+                </div>
+                <div class="search">
+                    <input type="text" class="form-control" placeholder="Search here">
+                    <label for="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </label>
+                </div>
+                
+                    @if (adminData != null)
+                    {
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-regular fa-user me-2"></i>
+                                    @adminData.userName
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                                </ul>
+                            </div>
+                    }
+                
+                @*<div class="user">
+                    <img src="assets/images/person_1.jpg" alt="">
+                </div>*@
+            </div>
+            @RenderBody()
+        </div>
+            
+        </div>
 
 
 
-    <!-- footer -->
-    @*@Scripts.Render("~/bundles/bootstrap")*@
-    @*@Scripts.Render("~/bundles/jquery")*@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
-    @Scripts.Render("~/Scripts/adminPanel.js")
-    @*@RenderSection("scripts", required: false)*@
+        <!-- footer -->
+        @*@Scripts.Render("~/bundles/bootstrap")*@
+        @*@Scripts.Render("~/bundles/jquery")*@
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+        @Scripts.Render("~/Scripts/adminPanel.js")
+        @*@RenderSection("scripts", required: false)*@
 </body>
 </html>
 

@@ -155,7 +155,6 @@ body{
     height: 42px;
     border-radius: 50%;
     overflow: hidden;
-    /* margin-right: 5px; */
     cursor: pointer;
 }
 .user img{
