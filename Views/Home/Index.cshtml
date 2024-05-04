@@ -1,10 +1,10 @@
-﻿            
+﻿@model List<Pet_Adoption_System.Models.Category>
 @{
     ViewBag.Title = "Home";
-    //var userData = TempData["userInfo"] as Pet_Adoption_System.Models.User;
+    Pet_Adoption_System.Models.User userData = Session["userInfo"] as Pet_Adoption_System.Models.User;
 }
 
-@*<h2>Index</h2>*@
+
 
 <!-- banner section -->
 <section class="banner-section">
@@ -13,9 +13,6 @@
             <div class="bannerTagLinesArea">
                 <h1 class="headLineText">The love you Rescue,<br> Rescues you right back!</h1>
                 <button class="btn btn-warning mt-2">Find Your Match!</button>
-                @*@if(userData != null){
-                    <h2>@userData.userId <br> @userData.userName</h2>
-                }*@
             </div>
             <div class="giphArea p-5">
                 <img src="~/images/a426653d052246e2d4d18ab8c7f933c6.gif" class="img-fluid bannerGiph" alt="bannerImg">
@@ -31,38 +28,22 @@
         <h3 class="text-center categoriesHeading pb-3">Our Categories</h3>
         <div class="categorizeHolder d-flex align-items-center">
             <div class="row w-100">
-                <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
-                    <div class="categCard">
-                        <img src="~/images/catImg.jpg" alt="img">
-                        <div class="overLay d-flex align-items-center justify-content-center">
-                            <h4 class="text-center">Cats</h4>
+                @if (Model.Count > 0 ) { 
+                    foreach (var singleCateg in Model) { 
+                        <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
+                        <div class="categCard">
+                            <img src="~/images/@singleCateg.categoryImage" alt="img">
+                            <div class="overLay d-flex align-items-center justify-content-center">
+                                <h4 class="text-center">@singleCateg.categoryTitle</h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
-                    <div class="categCard">
-                        <img src="images/dogImg.jpeg" alt="img">
-                        <div class="overLay d-flex align-items-center justify-content-center">
-                            <h4 class="text-center">Dogs</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
-                    <div class="categCard">
-                        <img src="images/parrot.jpg" alt="img">
-                        <div class="overLay d-flex align-items-center justify-content-center">
-                            <h4 class="text-center">Parrots</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
-                    <div class="categCard">
-                        <img src="images/rabbitImg.jpg" alt="img">
-                        <div class="overLay d-flex align-items-center justify-content-center">
-                            <h4 class="text-center">Rabbits</h4>
-                        </div>
-                    </div>
-                </div>
+
+                    }
+                }
+                else { 
+                    <h5>No Categories Listed !</h5>
+                }
             </div>
 
         </div>

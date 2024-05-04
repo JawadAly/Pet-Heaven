@@ -88,7 +88,10 @@ namespace Pet_Adoption_System.Controllers
             TempData["message"] = "<script> alert('Customer Registered Successfuly!')  <script>";
             return RedirectToAction("Login");
         }
-        
 
+        public ActionResult Logout() {
+            Session.Remove("userInfo");
+            return RedirectToAction("Index","Home");
+        }
     }
 }
