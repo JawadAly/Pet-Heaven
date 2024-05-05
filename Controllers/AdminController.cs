@@ -21,15 +21,19 @@ namespace Pet_Adoption_System.Controllers
         ConnectionProvider provider;
         List<Category> categoriesList;
         List<Color> colorsList;
+        List<Pet> PetList;
         ColorAndCategoryComposite compositeClass;
         int categoriesCount;
+        int petCount;
         public AdminController() {
             provider = new ConnectionProvider();
         }
         public ActionResult Index()
         {
             fetchCategories();
+            fetchPets();
             ViewBag.categCount = categoriesCount;
+            ViewBag.PetCount = petCount;
             return View();
         }
         public ActionResult Categories() {
@@ -114,9 +118,11 @@ namespace Pet_Adoption_System.Controllers
         {
             fetchColors();
             fetchCategories();
+            fetchPets();
             compositeClass = new ColorAndCategoryComposite();
             compositeClass.catgrsList = categoriesList;
             compositeClass.clrsList = colorsList;
+            compositeClass.petList = PetList;
             return View(compositeClass);
         }
         [HttpPost]
@@ -160,6 +166,40 @@ namespace Pet_Adoption_System.Controllers
             sqcmd.ExecuteNonQuery();
             conn.Close();
             return View();
+        }
+        public void fetchPets()
+        {
+            try
+            {
+                PetList = new List<Pet>();
+                conn = provider.getConnection();
+                conn.Open();
+                string query = "SELECT * FROM pets ";
+                sqcmd = new SqlCommand(query, conn);
+                SqlDataReader sdr = sqcmd.ExecuteReader();
+                if (sdr.HasRows)
+                {
+                    while (sdr.Read())
+                    {
+                        Pet pet = new Pet();
+                        pet.petName = sdr["petName"].ToString();
+                        //pet.petAge = Convert.ToInt32(sdr["petAge"]);
+                        pet.petTitleImg = sdr["petTitleImg"].ToString();
+                        pet.petStatus = Convert.ToInt32(sdr["petStatus"]);
+                        //pet.petCost = Convert.ToInt32(sdr["petCost"]);
+                        //pet.petDesc = sdr["petDesc"].ToString();
+
+                        PetList.Add(pet);
+                    }
+                    petCount = PetList.Count();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "<script> alert('An error has occured on server side')  <script>";
+            }
+
         }
 
     }

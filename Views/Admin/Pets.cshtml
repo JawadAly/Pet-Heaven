@@ -27,7 +27,7 @@
                             {
                                 foreach (var singleColor in Model.clrsList)
                                 {
-                                    <option id="@singleColor.colorId">@singleColor.colorName</option>
+                                    <option value="@singleColor.colorId">@singleColor.colorName</option>
                                 }
                             }
 
@@ -97,6 +97,44 @@
 
     <div class="clients">
         <h3 class="order-title">Added Pets</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Pet</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.petList != null && Model.petList.Count > 0)
+                {
+                    foreach (var singelCateg in Model.petList)
+                    {
+                        <tr>
+                            <td>
+                                <div class="user"><img src="~/images/@singelCateg.petTitleImg" alt=""></div>
+                            </td>
+                            <td>
+                                <div class="text-secondary ps-3">@singelCateg.petName</div>
+                            </td>
+                            <td>
+                                <span class="pet-status">@(singelCateg.petStatus == 0 ? "Not Verified" : "Verified")</span>
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td class="d-flex align-items-center">
+                            <h5>No Pets to show!</h5>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
 
 
     </div>

@@ -2,6 +2,7 @@
 @{
     int incomingCategCount = ViewBag.categCount;
     ViewBag.Title = "AdminPanel";
+    int incomingPetCount = ViewBag.PetCount;
 }
 
 
@@ -21,7 +22,7 @@
 
         <div class="card">
             <div class="card-upper d-flex justify-content-between align-items-center">
-                <h1 class="number">1,199</h1>
+                <h1 class="number">@(incomingPetCount != null ? @incomingPetCount : 0)</h1>
                 <div class="icons"><i class="fa-solid fa-eye"></i></div>
             </div>
             <div class="card-title">
