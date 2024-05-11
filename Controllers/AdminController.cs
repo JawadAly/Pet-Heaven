@@ -151,7 +151,8 @@ namespace Pet_Adoption_System.Controllers
 
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("INSERT INTO pets VALUES (@NAME,@AGE,@TITLEIMG,@IMG2,@IMG3,@IMG4,@TYPE,@STATUS,@COST,@CATEGID,@PETDESC)", conn);
+            //sqcmd = new SqlCommand("INSERT INTO pets VALUES (@NAME,@AGE,@TITLEIMG,@IMG2,@IMG3,@IMG4,@TYPE,@STATUS,@COST,@CATEGID,@PETDESC)", conn);
+            sqcmd = new SqlCommand("INSERT INTO pets VALUES (@NAME,@AGE,@TITLEIMG,@IMG2,@IMG3,@IMG4,@TYPE,@STATUS,@COST,@CATEGID,@PETDESC);SELECT SCOPE_IDENTITY()", conn);
             sqcmd.Parameters.AddWithValue("@NAME", pet.petName);
             sqcmd.Parameters.AddWithValue("@AGE", pet.petAge);
             sqcmd.Parameters.AddWithValue("@TITLEIMG", imgName);
@@ -163,8 +164,10 @@ namespace Pet_Adoption_System.Controllers
             sqcmd.Parameters.AddWithValue("@COST", Convert.ToInt32(pet.petCost));
             sqcmd.Parameters.AddWithValue("@CATEGID", Convert.ToInt32(pet.petCategId));
             sqcmd.Parameters.AddWithValue("@PETDESC", pet.petDesc);
-            sqcmd.ExecuteNonQuery();
+            //sqcmd.ExecuteNonQuery();
+            object newPetId = sqcmd.ExecuteScalar();
             conn.Close();
+            insertPetColors(Convert.ToInt32(newPetId),pet.petColors);
             return View();
         }
         public void fetchPets()
@@ -200,6 +203,25 @@ namespace Pet_Adoption_System.Controllers
                 TempData["message"] = "<script> alert('An error has occured on server side')  <script>";
             }
 
+        }
+        void insertPetColors(int petId, int[] colors) {
+            if (conn.State == ConnectionState.Open)
+            {
+                conn.Close();
+            }
+            else {
+                    conn = provider.getConnection();
+                    conn.Open();
+                foreach (var colorId in colors) {
+                    sqcmd = new SqlCommand("INSERT INTO petColors VALUES (@PETID,@COLORID)", conn);
+                    sqcmd.Parameters.AddWithValue("@PETID",petId);
+                    sqcmd.Parameters.AddWithValue("@COLORID", colorId);
+                    sqcmd.ExecuteNonQuery();
+
+                }
+                    conn.Close();
+                
+            }
         }
 
     }

@@ -1,0 +1,49 @@
+﻿
+@{ 
+    ViewBag.Title = "User";
+}
+
+<section class="userPanelSec">
+    <div class="container">
+        <div class="centerer d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-md-4 col-12 d-flex align-items-center justify-content-center mb-3">
+                    <a href="@Url.Action("SubmitReview","User")" class="text-decoration-none">
+                        <div class="userCard d-flex align-items-center justify-content-center flex-column">
+                            <lord-icon src="https://cdn.lordicon.com/xjronrda.json"
+                                       trigger="hover"
+                                       style="width:150px;height:150px">
+                            </lord-icon>
+                            <h3>Submit Review</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-12 d-flex align-items-center justify-content-center mb-3">
+                    <a href="@Url.Action("ReportFoundPet","User")" class="text-decoration-none">
+                        <div class="userCard d-flex align-items-center justify-content-center flex-column">
+                            <lord-icon src="https://cdn.lordicon.com/fwdowgyd.json"
+                                       trigger="hover"
+                                       style="width:150px;height:150px">
+                            </lord-icon>
+                            <h3>Report Found Pet</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-12 d-flex align-items-center justify-content-center mb-3">
+                    <a href="@Url.Action("MyAdoptions","User")" class="text-decoration-none">
+                        <div class="userCard d-flex align-items-center justify-content-center flex-column">
+                            <lord-icon src="https://cdn.lordicon.com/epietrpn.json"
+                                       trigger="hover"
+                                       style="width:150px;height:150px">
+                            </lord-icon>
+                            <h3>My Adoptions</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

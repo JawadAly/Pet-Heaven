@@ -23,5 +23,9 @@ namespace Pet_Adoption_System.Models
         public int petCost { get; set; }
         public int petCategId { get; set; }
         public string petDesc { get; set; }
+        //public List<Color> petColorsList { get; set; }
+        public int[] petColors { get; set; }
+        //public string petColor { get; set; }
+        public List<Color> petColorsList { get; set; }
     }
 }

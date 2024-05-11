@@ -1,0 +1,59 @@
+﻿@model Pet_Adoption_System.Models.Pet
+@{
+    ViewBag.Title = Model.petName;
+}
+
+
+<section class="productViewSec">
+    <div class="container">
+        <div class="flexer">
+            <div class="productHolder p-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="picsArea">
+                            <div class="mainPic mb-2">
+                                <img src="~/images/@Model.petTitleImg" alt="petTitleImg" class="img-fluid">
+                            </div>
+                            <div class="supportPics d-flex align-items-center justify-content-around flex-wrap">
+                                <img src="~/images/@Model.petImg2" alt="petImg2" class="img-fluid">
+                                <img src="~/images/@Model.petImg3" alt="petImg3" class="img-fluid">
+                                <img src="~/images/@Model.petImg4" alt="petImg4" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="detailsArea">
+                            <h2 class="mb-4">Pet Details</h2>
+                            <hr>
+                            <h3 class="mb-3">@Model.petName</h3>
+                            <h4 class="text-secondary mb-3">Age: @Model.petAge yr</h4>
+                            <h4 class="text-secondary mb-3">Status: <span class="badge rounded-pill text-bg-warning fw-medium">Available</span></h4>
+                            <h4 class="mb-3">Adoption Cost <span class="fs-5 ms-2 text-secondary fw-medium">Rs: @Model.petCost</span></h4>
+                            <h4 class="mb-3">Pet Colors: 
+                                <span class="fs-5 ms-2 text-secondary fw-medium">
+                                    @foreach (var singleColor in Model.petColorsList) {
+                                        @singleColor.colorName
+                                        if (singleColor != Model.petColorsList.Last()) { 
+                                            <text>,</text>
+                                        }
+                                    }
+                                </span>
+                            </h4>
+                            <h4 class="mb-2">Description:</h4>
+                            <p class="mb-3">@Model.petDesc</p>
+                            <div class="btnsHolder">
+                                @if (Model.petType == 0)
+                                {
+                                    <a href="@Url.Action("AdoptPet","Home",new { id = Model.petId})" class="btn btn-warning">Adopt Pet</a>
+                                }
+                                else { 
+                                    <a class="btn btn-warning">Claim Lost Pet</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

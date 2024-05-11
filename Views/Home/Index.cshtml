@@ -1,4 +1,5 @@
-﻿@model List<Pet_Adoption_System.Models.Category>
+﻿@*@model List<Pet_Adoption_System.Models.Category>*@
+@model Pet_Adoption_System.Models.ColorAndCategoryComposite
 @{
     ViewBag.Title = "Home";
     Pet_Adoption_System.Models.User userData = Session["userInfo"] as Pet_Adoption_System.Models.User;
@@ -23,25 +24,31 @@
 </section>
 
 <!-- categorize section -->
-<section class="categorizeSection py-4">
+<section class="categorizeSection py-4" id="categories">
     <div class="container">
         <h3 class="text-center categoriesHeading pb-3">Our Categories</h3>
         <div class="categorizeHolder d-flex align-items-center">
             <div class="row w-100">
-                @if (Model.Count > 0 ) { 
-                    foreach (var singleCateg in Model) { 
+                @if (Model.catgrsList.Count > 0)
+                {
+                    foreach (var singleCateg in Model.catgrsList)
+                    {
                         <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
-                        <div class="categCard">
-                            <img src="~/images/@singleCateg.categoryImage" alt="img">
-                            <div class="overLay d-flex align-items-center justify-content-center">
-                                <h4 class="text-center">@singleCateg.categoryTitle</h4>
-                            </div>
+                            <a href="@Url.Action("CategoryView","Home", new { id = singleCateg.categoryId})">
+                                <div class="categCard">
+                                    <img src="~/images/@singleCateg.categoryImage" alt="img">
+                                    <div class="overLay d-flex align-items-center justify-content-center">
+                                        <h4 class="text-center">@singleCateg.categoryTitle</h4>
+                                    </div>
+                                </div>
+                            </a>
+
                         </div>
-                    </div>
 
                     }
                 }
-                else { 
+                else
+                {
                     <h5>No Categories Listed !</h5>
                 }
             </div>
@@ -49,6 +56,46 @@
         </div>
     </div>
 </section>
+
+
+
+<!-- Pets section -->
+<section class="categorizeSection py-4" id="petsSection">
+    <div class="container">
+        <h3 class="text-center categoriesHeading pb-3">Our Pets</h3>
+        <div class="categorizeHolder d-flex align-items-center">
+            <div class="row w-100">
+                @if (Model.catgrsList.Count > 0)
+                {
+                    foreach (var singlePet in Model.petList)
+                    {
+                        <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
+                            <a href="@Url.Action("PetView","Home" , new { id = singlePet.petId})">
+                                <div class="petsCard">
+                                    <img class="petsCardImg" src="~/images/@singlePet.petTitleImg" alt="img">
+                                    <div class="edgyContainer d-flex justify-content-center">
+                                        <h4 class="text-center mt-3 text-secondary">@singlePet.petName</h4>
+                                    </div>
+                                    <div class="petsCardoverLay d-flex align-items-center justify-content-center">
+                                        <h4>Age: @singlePet.petAge yrs</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <h5>No Pets Listed !</h5>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
 
 <!-- customer reviews section -->
 

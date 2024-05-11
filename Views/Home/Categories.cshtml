@@ -1,0 +1,37 @@
+﻿@model List<Pet_Adoption_System.Models.Category>
+@{
+    Layout = null;
+    ViewBag.Title = "Categories";
+}
+
+<section class="categorizeSection py-4">
+    <div class="container">
+        <h3 class="text-center categoriesHeading pb-3">Our Categories</h3>
+        <div class="categorizeHolder d-flex align-items-center">
+            <div class="row w-100">
+                @if (Model.Count > 0)
+                {
+                    foreach (var singleCateg in Model)
+                    {
+                        <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
+                            <div class="categCard">
+                                <img src="~/images/@singleCateg.categoryImage" alt="img">
+                                <div class="overLay d-flex align-items-center justify-content-center">
+                                    <h4 class="text-center">@singleCateg.categoryTitle</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <h5>No Categories Listed !</h5>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+

@@ -1,0 +1,39 @@
+﻿@model List<Pet_Adoption_System.Models.Pet>
+@{
+    ViewBag.Title = "CategoryPets";
+}
+
+
+<!-- pets section -->
+<section class="categPetsSection py-4">
+    <div class="container">
+        <h3 class="text-center categoriesHeading pb-3">Our Pets</h3>
+        <div class="petsHolder d-flex align-items-center">
+            <div class="row w-100">
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var singlePet in Model)
+                    {
+                <div class="col-sm-3 col-md-3 col-12 d-flex justify-content-center mb-5">
+                    <a href="@Url.Action("PetView","Home" , new { id = singlePet.petId})">
+                        <div class="petsCard">
+                            <img class="petsCardImg" src="~/images/@singlePet.petTitleImg" alt="img">
+                            <div class="edgyContainer d-flex justify-content-center">
+                                <h4 class="text-center mt-3 text-secondary">@singlePet.petName</h4>
+                            </div>
+                            <div class="petsCardoverLay d-flex align-items-center justify-content-center">
+                                <h4>Age: @singlePet.petAge yrs</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                    }
+                }
+                else { 
+                    <h4 class="text-center">No Pets exist in this category! </h4>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>

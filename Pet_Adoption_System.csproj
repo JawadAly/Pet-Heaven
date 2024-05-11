@@ -124,6 +124,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DbConnection\ConnectionProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -142,9 +143,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\categPets.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\adminPanel.css" />
+    <Content Include="Content\productView.css" />
     <Content Include="Content\reg.css" />
+    <Content Include="Content\userPanel.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -187,6 +191,13 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Admin\Categories.cshtml" />
     <Content Include="Views\Admin\Pets.cshtml" />
+    <Content Include="Views\Home\Categories.cshtml" />
+    <Content Include="Views\Home\CategoryView.cshtml" />
+    <Content Include="Views\Home\PetView.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\SubmitReview.cshtml" />
+    <Content Include="Views\User\ReportFoundPet.cshtml" />
+    <Content Include="Views\User\MyAdoptions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
