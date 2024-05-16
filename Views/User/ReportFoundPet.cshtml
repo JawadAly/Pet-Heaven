@@ -1,7 +1,98 @@
-﻿
+﻿@model Pet_Adoption_System.Models.ColorAndCategoryComposite
 @{
     ViewBag.Title = "Found Pet Report";
+    Pet_Adoption_System.Models.User userData = Session["userInfo"] as Pet_Adoption_System.Models.User;
 }
 
+@Html.Raw(TempData["message"])
+<section class="foundPetReportSection">
+    <div class="container">
+        <h2 class="text-center p-4">Report Found Pet</h2>
+        <div class="formHolder p-2">
 
-<h1 class="pt-5 mt-5">Found Pet Report</h1>
+            @using (Html.BeginForm("ReportFoundPet", "User",FormMethod.Post,new {@enctype = "multipart/form-data" })) {
+                @Html.AntiForgeryToken()
+
+            <form class="pb-3 mb-5 reportForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Name:</label>
+                        <input type="text" name="petName" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Colors:</label>
+                        <select class="form-control" name="foundPetColorId">
+                            @if (Model.clrsList != null && Model.clrsList.Count > 0)
+                                {
+                                    foreach (var singleColor in Model.clrsList)
+                                    {
+                                        <option value="@singleColor.colorId">@singleColor.colorName</option>
+                                    }
+                                }
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="age">Age:</label>
+                        <input type="number" name="petAge" class="form-control" id="age" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Category:</label>
+                        <select class="form-control" name="petCategId">
+                            @if (Model.catgrsList != null && Model.catgrsList.Count > 0)
+                            {
+                                foreach (var singleCateg in Model.catgrsList)
+                                {
+                                        <option value="@singleCateg.categoryId">@singleCateg.categoryTitle</option>
+                                }
+                            }
+                            else
+                            {
+                                    <option>No Categories Listed</option>
+                            }
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label>Pet Description:</label>
+                        <textarea class="form-control" name="petDesc"></textarea>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Pet Cost:</label>
+                        <input type="number" name="petCost" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-8 mb-3">
+                    <label>Title Image(file):</label>
+                    <input type="file" name="file1" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="col-4 mb-3">
+                        <label>Image 2:</label>
+                        <input type="file" name="file2" class="form-control" />
+                    </div>
+                    <div class="col-4 mb-3">
+                        <label>Image 3:</label>
+                        <input type="file" name="file3" class="form-control" />
+                    </div>
+                    <div class="col-4 mb-3">
+                        <label>Image 4:</label>
+                        <input type="file" name="file4" class="form-control" />
+                    </div>
+                </div>
+                <input type="number" name="userId" hidden value="@(userData!= null ? @userData.userId : 0)"/>
+                <button class="btn btn-warning mb-5" type="submit">Report</button>
+            </form>
+
+            }
+
+        </div>
+    </div>
+</section>

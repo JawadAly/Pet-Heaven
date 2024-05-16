@@ -25,7 +25,9 @@ namespace Pet_Adoption_System.Models
         public string petDesc { get; set; }
         //public List<Color> petColorsList { get; set; }
         public int[] petColors { get; set; }
-        //public string petColor { get; set; }
+        public int foundPetColorId { get; set; }
         public List<Color> petColorsList { get; set; }
+        //this attribute is for reporting lost pet functionality
+        public int userId { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Pet_Adoption_System.Controllers
         ConnectionProvider provider;
         public List<Category> categoriesList;
         public List<Pet> PetList;
+        List<Review> reviewList;
         Pet incomingPet;
         public HomeController() {
             provider = new ConnectionProvider();
@@ -26,9 +27,11 @@ namespace Pet_Adoption_System.Controllers
         {
             fetchCategories();
             fetchPets();
+            fetchReview();
             ColorAndCategoryComposite composite = new ColorAndCategoryComposite();
             composite.catgrsList = categoriesList;
             composite.petList= PetList;
+            composite.reviewList = reviewList;
             return View(composite);
         }
 
@@ -197,6 +200,7 @@ namespace Pet_Adoption_System.Controllers
             object result = sqcmd.ExecuteScalar();
             if (result != null)
             {
+                incomingPet = new Pet();
                 fetchDetailedPetInfo(id);
                 fetchPetColors(id);
                 return View(incomingPet);
@@ -210,11 +214,11 @@ namespace Pet_Adoption_System.Controllers
         public void fetchDetailedPetInfo(int id) {
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("SELECT * FROM pets WHERE petId = @ID AND petStatus = 1",conn);
+            sqcmd = new SqlCommand("SELECT * FROM pets WHERE petId = @ID",conn);
             sqcmd.Parameters.AddWithValue("@ID",id);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.Read()) {
-                incomingPet = new Pet();
+                //incomingPet = new Pet();
                 incomingPet.petId = Convert.ToInt32(sdr["petId"]);
                 incomingPet.petName = sdr["petName"].ToString();
                 incomingPet.petTitleImg = sdr["petTitleImg"].ToString();
@@ -250,6 +254,35 @@ namespace Pet_Adoption_System.Controllers
             }
             else {
                 return RedirectToAction("Index");
+            }
+        }
+
+        public void fetchReview()
+        {
+            try
+            {
+                reviewList = new List<Review>();
+                conn = provider.getConnection();
+                conn.Open();
+                sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=0", conn);
+                SqlDataReader sdr = sqcmd.ExecuteReader();
+                if (sdr.HasRows)
+                {
+                    while (sdr.Read())
+                    {
+                        Review rev = new Review();
+                        rev.custname = sdr["custname"].ToString();
+                        rev.review = sdr["review"].ToString();
+                        rev.rvTime = Convert.ToDateTime(sdr["rvTime"]);
+
+                        reviewList.Add(rev);
+                    }
+                }
+                conn.Close();
+            }
+            catch (SqlException ex)
+            {
+                TempData["message"] = "<script> alert('An error has occured on server side')  <script>";
             }
         }
 

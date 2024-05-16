@@ -10,5 +10,6 @@ namespace Pet_Adoption_System.Models
         public List<Category> catgrsList {get;set;}
         public List<Color> clrsList { get;set;}
         public List<Pet> petList { get; set; }
+        public List<Review> reviewList { get; set; }
     }
 }

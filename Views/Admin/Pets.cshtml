@@ -115,12 +115,13 @@
                                 <div class="user"><img src="~/images/@singelCateg.petTitleImg" alt=""></div>
                             </td>
                             <td>
-                                <div class="text-secondary ps-3">@singelCateg.petName</div>
+                                <a href="@Url.Action("PetView","Home", new {id = singelCateg.petId })">
+                                     <div class="text-secondary ps-3">@singelCateg.petName</div>
+                                </a>
                             </td>
                             <td>
-                                <span class="pet-status">@(singelCateg.petStatus == 0 ? "Not Verified" : "Verified")</span>
+                                 <span class="pet-status">@(singelCateg.petStatus == 0 ? "Not Verified" : "Verified")</span>
                             </td>
-
                         </tr>
                     }
                 }

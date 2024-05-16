@@ -22,6 +22,7 @@ namespace Pet_Adoption_System.Controllers
         List<Category> categoriesList;
         List<Color> colorsList;
         List<Pet> PetList;
+        List<foundPet> foundPetList;
         ColorAndCategoryComposite compositeClass;
         int categoriesCount;
         int petCount;
@@ -177,7 +178,7 @@ namespace Pet_Adoption_System.Controllers
                 PetList = new List<Pet>();
                 conn = provider.getConnection();
                 conn.Open();
-                string query = "SELECT * FROM pets ";
+                string query = "SELECT * FROM pets";
                 sqcmd = new SqlCommand(query, conn);
                 SqlDataReader sdr = sqcmd.ExecuteReader();
                 if (sdr.HasRows)
@@ -185,6 +186,7 @@ namespace Pet_Adoption_System.Controllers
                     while (sdr.Read())
                     {
                         Pet pet = new Pet();
+                        pet.petId = Convert.ToInt32(sdr["petId"]);
                         pet.petName = sdr["petName"].ToString();
                         //pet.petAge = Convert.ToInt32(sdr["petAge"]);
                         pet.petTitleImg = sdr["petTitleImg"].ToString();
@@ -223,6 +225,58 @@ namespace Pet_Adoption_System.Controllers
                 
             }
         }
+        public ActionResult Verifications() {
+            fetchUnverifiedPets();
+            return View(foundPetList);
+        }
+        public void fetchUnverifiedPets() {
+            foundPetList = new List<foundPet>();
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("select c.custName,c.custEmail,c.custAddress,c.custPhone,p.petId,p.petName from customersTbl c join CustReportedPets crp on c.custId = crp.customerId join pets p on crp.petId = p.petId where p.petStatus = 0", conn);
+            SqlDataReader sdr = sqcmd.ExecuteReader();
+            if (sdr.HasRows) {
+                while (sdr.Read()) {
+                    foundPet fp = new foundPet();
+                    fp.pet = new Pet();
+                    fp.customer = new Customer();
+                    fp.pet.petId = Convert.ToInt32(sdr["petId"]);
+                    fp.pet.petName = sdr["petName"].ToString();
+                    fp.customer.custName = sdr["custName"].ToString();
+                    fp.customer.custEmail = sdr["custEmail"].ToString();
+                    fp.customer.custAddress = sdr["custAddress"].ToString();
+                    fp.customer.custPhone = sdr["custPhone"].ToString();
+                    foundPetList.Add(fp);
+                }
+            }
 
+        }
+        public ActionResult VerifyPet(int id) {
+            //first checking for pet existence
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT petName FROM pets WHERE petId = @ID;",conn);
+            sqcmd.Parameters.AddWithValue("@ID",id);
+            object val = sqcmd.ExecuteScalar();
+            if (val != null)
+            {
+                UpdateStatus(id);
+            }
+            else {
+                TempData["message"] = "<script> alert('No such pet found!')  </script>";
+            }
+            conn.Close();
+            return RedirectToAction("Verifications");
+        }
+        void UpdateStatus(int id) {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("UPDATE pets SET petStatus = 1 WHERE petId = @Id", conn);
+            sqcmd.Parameters.AddWithValue("@Id",id);
+            sqcmd.ExecuteNonQuery();
+            conn.Close();
+            TempData["message"] = "<script> alert('Pet Status updated successfully!')  </script>";
+        }
+        
     }
 }

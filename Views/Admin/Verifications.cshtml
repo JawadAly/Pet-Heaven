@@ -1,0 +1,98 @@
+﻿@model List<Pet_Adoption_System.Models.foundPet>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Verifications";
+}
+
+@Html.Raw(TempData["message"])
+<div class="details">
+    <div class="orders-area">
+            <h2 class="order-title">Un-Verified Pets</h2>
+        <div class="table-responsive">
+            <table class="table my-5">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Pet Title</th>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var singleVals in Model)
+                        {
+                            <tr>
+                                <td>@singleVals.customer.custName</td>
+                                <td>@singleVals.customer.custEmail</td>
+                                <td>@singleVals.customer.custAddress</td>
+                                <td>@singleVals.customer.custPhone</td>
+                                <td>
+                                    <a href="@Url.Action("PetView", "Home", new {id = singleVals.pet.petId })">
+                                    @singleVals.pet.petName
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("VerifyPet", "Admin", new { id = singleVals.pet.petId})" class="me-2">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                    |
+                                    <a href="@Url.Action("DeletePet", "Admin", new { id = singleVals.pet.petId})" class="ms-2">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="clients">
+        <h3 class="order-title">Recent Customers</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td class="d-flex align-items-center">
+                        <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                        <div class="text-secondary ps-3">Sara</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="d-flex align-items-center">
+                        <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                        <div class="text-secondary ps-3">Sara</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="d-flex align-items-center">
+                        <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                        <div class="text-secondary ps-3">Sara</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="d-flex align-items-center">
+                        <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                        <div class="text-secondary ps-3">Sara</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="d-flex align-items-center">
+                        <div class="user"><img src="assets/images/people_3.jpg" alt=""></div>
+                        <div class="text-secondary ps-3">Sara</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="footer w-100 p-3 fixed-bottom bg-dark">
+    <p class="text-center text-white">Copyright © 2022 | Js-Dev . All rights Reserved .</p>
+</div>
+

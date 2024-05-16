@@ -31,11 +31,19 @@
                             <h4 class="mb-3">Adoption Cost <span class="fs-5 ms-2 text-secondary fw-medium">Rs: @Model.petCost</span></h4>
                             <h4 class="mb-3">Pet Colors: 
                                 <span class="fs-5 ms-2 text-secondary fw-medium">
-                                    @foreach (var singleColor in Model.petColorsList) {
+                                    @if (Model.petColorsList != null && Model.petColorsList.Count > 0)
+                                    {
+                                        foreach (var singleColor in Model.petColorsList)
+                                        {
                                         @singleColor.colorName
-                                        if (singleColor != Model.petColorsList.Last()) { 
+                                            if (singleColor != Model.petColorsList.Last())
+                                            {
                                             <text>,</text>
+                                            }
                                         }
+                                    }
+                                    else { 
+                                           <text> No colors to show!</text>
                                     }
                                 </span>
                             </h4>

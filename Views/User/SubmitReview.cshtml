@@ -1,6 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "Review Submission";
+    Pet_Adoption_System.Models.User userData = Session["userInfo"] as Pet_Adoption_System.Models.User;
 }
-
+@Html.Raw(TempData["message"])
 <h1 class="pt-5 mt-5">Submit Review</h1>
+<div class="container mt-3">
+    <div class="card rounded shadow">
+        @using (Html.BeginForm("SubmitReview", "User", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <form>
+                <div class="card-body p-4">
+                    <textarea class="form-control rounded-3" rows="5" name="review" placeholder="Enter Review Here..."></textarea>
+                    <input type="number" value="@(userData != null ? @userData.userId : 0)" hidden name="custID" />
+                    <button class="btn btn-primary mt-5" type="submit">Submir Review</button>
+
+                </div>
+            </form>
+        }
+    </div>
+</div>

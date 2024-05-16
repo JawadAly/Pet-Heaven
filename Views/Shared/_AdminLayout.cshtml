@@ -20,27 +20,29 @@
         <div class="navigation">
             <ul class="ul">
                 <li class="mt-1 logo-li">
-                    <a href="" class="no-hover">
-                        <span><i class="fa-brands fa-apple brand-logo"></i></span>
-                        <div class="title fw-bolder"> Brand </div>
+                    <a href="@Url.Action("Index","Admin")" class="no-hover">
+                        <span><i class="fa-solid fa-paw"></i></span>
+                        <div class="title fw-bolder"> Pet Heaven </div>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="@Url.Action("Categories","Admin")">
                         <span><i class="fa-solid fa-house"></i></span>
-                        <div class="title"> @Html.ActionLink("Categories", "Categories", "Admin") </div>
+                        <div class="title">
+                            Categories
+                        </div>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="@Url.Action("Pets","Admin")">
                         <span><i class="fa-solid fa-users"></i></span>
-                        <div class="title"> @Html.ActionLink("Pets", "Pets", "Admin") </div>
+                        <div class="title"> Pets </div>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="@Url.Action("Verifications","Admin")">
                         <span><i class="fa-solid fa-comments"></i></span>
-                        <div class="title"> Messages </div>
+                        <div class="title"> Verifications </div>
                     </a>
                 </li>
                 <li>

@@ -104,44 +104,27 @@
         <h3 class="text-center categoriesHeading pb-3">Customer Reviews</h3>
         <div class="reviewsHolder d-flex align-items-center">
             <div class="row w-100">
-                <div class="col-md-4 col-12 d-flex justify-content-center mb-5">
-                    <div class="reviewCard">
-                        <img src="images/catImg.jpg" alt="custImg" class="reviewPersImg">
-                        <p class="mt-3 text-center text-secondary">
-                            <span class="fs-3">&#8220</span>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optionatus possimus
-                            <span class="fs-3">&#8221</span>
-                        </p>
-                        <p class="text-end text-secondary me-2">Rated On: 22-02-24</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 d-flex justify-content-center mb-5">
-                    <div class="reviewCard">
-                        <img src="images/catImg.jpg" alt="custImg" class="reviewPersImg">
-                        <p class="mt-3 text-center text-secondary">
-                            <span class="fs-3">&#8220</span>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optionatus possimus
-                            <span class="fs-3">&#8221</span>
-                        </p>
-                        <p class="text-end text-secondary me-2">Rated On: 22-02-24</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12 d-flex justify-content-center mb-5">
-                    <div class="reviewCard">
-                        <img src="images/catImg.jpg" alt="custImg" class="reviewPersImg">
-                        <p class="mt-3 text-center text-secondary">
-                            <span class="fs-3">&#8220</span>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optionatus possimus
-                            <span class="fs-3">&#8221</span>
-                        </p>
-                        <p class="text-end text-secondary me-2">Rated On: 22-02-24</p>
-                    </div>
-                </div>
-                <!-- <div class="col-md-4 col-12 d-flex justify-content-center mb-5">
-                  <div class="reviewCard">
-
-                  </div>
-                </div> -->
+                @if (Model.reviewList != null && Model.reviewList.Count > 0)
+                {
+                    foreach (var singleReview in Model.reviewList)
+                    {
+                        <div class="col-md-4 col-12 d-flex justify-content-center mb-5">
+                            <div class="reviewCard">
+                                @*<img src="images/catImg.jpg" alt="custImg" class="reviewPersImg">*@
+                                <p class="mt-3 text-center text-secondary">
+                                    <span class="fs-3">&#8220</span>
+                                    @singleReview.review
+                                    <span class="fs-3">&#8221</span>
+                                </p>
+                                <p class="text-end text-secondary me-2">Rated On: @singleReview.rvTime</p>
+                                <p class="text-end text-secondary me-2">Rated by: @singleReview.custname</p>
+                            </div>
+                        </div>
+                    }
+                }
+                else { 
+                    <h5 class="text-center">No reviews to show!</h5>
+                }
             </div>
 
         </div>

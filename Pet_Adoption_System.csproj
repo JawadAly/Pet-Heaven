@@ -133,7 +133,9 @@
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\ColorAndCategoryComposite.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\foundPet.cs" />
     <Compile Include="Models\Pet.cs" />
+    <Compile Include="Models\Review.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -144,6 +146,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\categPets.css" />
+    <Content Include="Content\foundPetReport.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\adminPanel.css" />
     <Content Include="Content\productView.css" />
@@ -198,6 +201,7 @@
     <Content Include="Views\User\SubmitReview.cshtml" />
     <Content Include="Views\User\ReportFoundPet.cshtml" />
     <Content Include="Views\User\MyAdoptions.cshtml" />
+    <Content Include="Views\Admin\Verifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
