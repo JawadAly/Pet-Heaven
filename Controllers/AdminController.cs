@@ -277,6 +277,34 @@ namespace Pet_Adoption_System.Controllers
             conn.Close();
             TempData["message"] = "<script> alert('Pet Status updated successfully!')  </script>";
         }
-        
+        public ActionResult DeletePet(int id) {
+            //first checking for pet existence
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT petName FROM pets where petId = @petId", conn);
+            sqcmd.Parameters.AddWithValue("@petId", id);
+            object result = sqcmd.ExecuteScalar();
+            if (result != null)
+            {
+                struckPet(id);
+            }
+            else {
+                TempData["message"] = "<script> alert('No such pet found!')  </script>";
+            }
+            
+            conn.Close();
+            return RedirectToAction("Verifications");
+        }
+        void struckPet(int id) {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("deleteFoundPet", conn);
+            sqcmd.Parameters.AddWithValue("@petId",id);
+            sqcmd.CommandType = CommandType.StoredProcedure;
+            sqcmd.ExecuteNonQuery();
+            TempData["message"] = "<script> alert('Pet deleted successfully!')  </script>";
+            conn.Close();
+        }
+
     }
 }

@@ -1,0 +1,46 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Payment";
+    //decerializing incoming adoption object
+    var adoptionJson = TempData["adoptionData"] as string;
+    var adoption = !string.IsNullOrEmpty(adoptionJson)
+        ? JsonConvert.DeserializeObject<Pet_Adoption_System.Models.Adoption>(adoptionJson)
+        : null;
+}
+
+
+@*<h1 class="text-center mt-5 pt-5">Payment</h1>
+<h3 class="text-center mt-5 pt-5">@adoption.customerId</h3>
+<h3 class="text-center mt-5 pt-5">@adoption.petId</h3>*@
+
+<section class="paymentSection">
+    <div class="container">
+        <h2 class="paymentHeading text-center pt-5">Payment Portal</h2>
+        <div class="centerer d-flex align-items-center justify-content-center">
+            <div class="myCard p-3">
+                <div class="endFlexer w-100 d-flex justify-content-end mb-5">
+                    <img src="~/images/easyJazz.png" class="img-fluid" alt="easyPaisaJazzCashIcon">
+                </div>
+                <div class="col-md-9">
+                    <h5 class="">Payable Amount: <span class="text-danger">Rs @adoption.adoptionCost* only</span></h5>
+                    @using (Html.BeginForm("MakeAdoptionOrClaim", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" hidden name="customerId" value="@adoption.customerId">
+                        <input type="number" hidden name="petId" value="@adoption.petId">
+                        <input type="number" hidden name="adoptionType" value="@adoption.adoptionType">
+                        <input type="number" hidden name="adoptionCost" value="@adoption.adoptionCost">
+                        <input type="file" class="form-control mb-3" name="adoptionPayment.paymentFile">
+                        <p class="text-danger">
+                            Account Title: Jawad Saleem <br/>
+                            Account Number: 0346-3654223 <br/>
+                            Payments aer accepted via JazzCash and Easypaisa Wallets!
+                        </p>
+                        <button type="submit" class="btn btn-warning">Submit Payment</button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

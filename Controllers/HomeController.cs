@@ -1,10 +1,13 @@
-﻿using Pet_Adoption_System.DbConnection;
+﻿using Newtonsoft.Json;
+using Pet_Adoption_System.DbConnection;
 using Pet_Adoption_System.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -193,12 +196,14 @@ namespace Pet_Adoption_System.Controllers
         }
         public ActionResult PetView(int id) {
             //first checking for pet existence
-            conn = provider.getConnection();
-            conn.Open();
-            sqcmd = new SqlCommand("SELECT petName FROM pets WHERE petId = @INCOMINGPETID",conn);
-            sqcmd.Parameters.AddWithValue("@INCOMINGPETID",id);
-            object result = sqcmd.ExecuteScalar();
-            if (result != null)
+
+            //conn = provider.getConnection();
+            //conn.Open();
+            //sqcmd = new SqlCommand("SELECT petName FROM pets WHERE petId = @INCOMINGPETID",conn);
+            //sqcmd.Parameters.AddWithValue("@INCOMINGPETID",id);
+            //object result = sqcmd.ExecuteScalar();
+
+            if (checkPetExistence(id))
             {
                 incomingPet = new Pet();
                 fetchDetailedPetInfo(id);
@@ -248,12 +253,118 @@ namespace Pet_Adoption_System.Controllers
             }
             conn.Close();
         }
-        public ActionResult AdoptPet(int id) {
+        public ActionResult AdoptPet(Adoption adp) {
             if (Session["userInfo"] == null) {
                 return RedirectToAction("Register","Account");
             }
             else {
+                //adoption Process Begins Here
+                //checking pet Existence
+                //conn = provider.getConnection();
+                //conn.Open();
+                //sqcmd = new SqlCommand("SELECT petName FROM pets WHERE petId = @INCOMINGPETID",conn) ;
+                //sqcmd.Parameters.AddWithValue("@INCOMINGPETID",adp.petId);
+                //object result = sqcmd.ExecuteScalar();
+                //conn.Close();
+                if (checkPetExistence(adp.petId))
+                {
+                    //passing data(adoptionObject) to paymentView by serializing it
+                    var adoptionJson = JsonConvert.SerializeObject(adp);
+                    TempData["adoptionData"] = adoptionJson;
+                    return RedirectToAction("PaymentVeiw");
+                }
+                else {
+                    TempData["message"] = "<script> alert('No such pet exists!')  </script>";
+                    return RedirectToAction("Index");
+                }
+                
+            }
+        }
+        public ActionResult PaymentVeiw()
+        {
+            //if (Session["userInfo"] != null)
+            //{
+            //    return View();
+            //}
+            //else { 
+            //    return RedirectToAction("Login", "Account");
+            //}
+            return View();
+        }
+        [HttpPost]
+        public ActionResult MakeAdoptionOrClaim(Adoption adp) {
+            bool custExistence, petExistence;
+            //checking for petExistence
+            petExistence = checkPetExistence(adp.petId);
+            //checking for customerExistence
+            custExistence = checkCustomerExistence(adp.customerId);
+            if (custExistence)
+            {
+                if (petExistence)
+                {
+                    //working for paymentScreenshot
+                    string imgPath = Server.MapPath("~/images");
+                    string imgName = Path.GetFileName(adp.adoptionPayment.paymentFile.FileName);
+                    string completePath = Path.Combine(imgPath, imgName);
+                    adp.adoptionPayment.paymentFile.SaveAs(completePath);
+                    //ready to make adoption or claim
+                    conn = provider.getConnection();
+                    conn.Open();
+                    sqcmd = new SqlCommand("MakePaymentAndAdoption", conn);
+                    sqcmd.Parameters.AddWithValue("@paymntAmount", adp.adoptionCost);
+                    sqcmd.Parameters.AddWithValue("@paymntScreenshot", imgName);
+                    sqcmd.Parameters.AddWithValue("@paymentDateTime", DateTime.Now);
+                    sqcmd.Parameters.AddWithValue("@custId", adp.customerId);
+                    sqcmd.Parameters.AddWithValue("@petId", adp.petId);
+                    sqcmd.Parameters.AddWithValue("@adp_Type", adp.adoptionType);
+                    sqcmd.Parameters.AddWithValue("@adp_Status", 0);
+                    sqcmd.CommandType= CommandType.StoredProcedure;
+                    sqcmd.ExecuteNonQuery();
+                    TempData["message"] = "<script> alert('Your request has been successfully submitted you can view your dashboard for further assistance!')  </script>";
+                    conn.Close();
+                    return RedirectToAction("Index","User");
+                }
+                else {
+                    TempData["message"] = "<script> alert('No such pet exists!')  </script>";
+                    return RedirectToAction("Index");
+                }
+            }
+            else {
+                TempData["message"] = "<script> alert('No such customer exists!')  </script>";
                 return RedirectToAction("Index");
+            }
+        }
+
+        public bool checkPetExistence(int petId) {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT petName FROM pets WHERE petId = @ID",conn);
+            sqcmd.Parameters.AddWithValue("@ID",petId);
+            object result = sqcmd.ExecuteScalar();
+            conn.Close();
+            if (result != null)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        public bool checkCustomerExistence(int customerId)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT custName FROM customersTbl WHERE custId = @ID", conn);
+            sqcmd.Parameters.AddWithValue("@ID", customerId);
+            object result = sqcmd.ExecuteScalar();
+            conn.Close();
+            if (result != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -285,6 +396,7 @@ namespace Pet_Adoption_System.Controllers
                 TempData["message"] = "<script> alert('An error has occured on server side')  <script>";
             }
         }
+        
 
     }
 }

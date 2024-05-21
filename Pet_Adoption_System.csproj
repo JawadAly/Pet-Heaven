@@ -129,11 +129,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Adoption.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\ColorAndCategoryComposite.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\foundPet.cs" />
+    <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Pet.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\User.cs" />
@@ -149,6 +151,7 @@
     <Content Include="Content\foundPetReport.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\adminPanel.css" />
+    <Content Include="Content\paymentPanel.css" />
     <Content Include="Content\productView.css" />
     <Content Include="Content\reg.css" />
     <Content Include="Content\userPanel.css" />
@@ -159,6 +162,7 @@
     <Content Include="images\a426653d052246e2d4d18ab8c7f933c6.gif" />
     <Content Include="images\catImg.jpg" />
     <Content Include="images\dogImg.jpeg" />
+    <Content Include="images\easyJazz.png" />
     <Content Include="images\parrot.jpg" />
     <Content Include="images\rabbitImg.jpg" />
     <Content Include="Scripts\bootstrap.js" />
@@ -202,6 +206,7 @@
     <Content Include="Views\User\ReportFoundPet.cshtml" />
     <Content Include="Views\User\MyAdoptions.cshtml" />
     <Content Include="Views\Admin\Verifications.cshtml" />
+    <Content Include="Views\Home\PaymentVeiw.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

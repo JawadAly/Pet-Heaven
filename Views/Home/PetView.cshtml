@@ -1,9 +1,10 @@
 ﻿@model Pet_Adoption_System.Models.Pet
 @{
     ViewBag.Title = Model.petName;
+    Pet_Adoption_System.Models.User userData = Session["userInfo"] as Pet_Adoption_System.Models.User;
 }
 
-
+@Html.Raw(TempData["message"])
 <section class="productViewSec">
     <div class="container">
         <div class="flexer">
@@ -29,34 +30,56 @@
                             <h4 class="text-secondary mb-3">Age: @Model.petAge yr</h4>
                             <h4 class="text-secondary mb-3">Status: <span class="badge rounded-pill text-bg-warning fw-medium">Available</span></h4>
                             <h4 class="mb-3">Adoption Cost <span class="fs-5 ms-2 text-secondary fw-medium">Rs: @Model.petCost</span></h4>
-                            <h4 class="mb-3">Pet Colors: 
+                            <h4 class="mb-3">
+                                Pet Colors:
                                 <span class="fs-5 ms-2 text-secondary fw-medium">
                                     @if (Model.petColorsList != null && Model.petColorsList.Count > 0)
                                     {
                                         foreach (var singleColor in Model.petColorsList)
                                         {
-                                        @singleColor.colorName
+                                            @singleColor.colorName
                                             if (singleColor != Model.petColorsList.Last())
                                             {
-                                            <text>,</text>
+                                                <text>,</text>
                                             }
                                         }
                                     }
-                                    else { 
-                                           <text> No colors to show!</text>
+                                    else
+                                    {
+                                        <text> No colors to show!</text>
                                     }
                                 </span>
                             </h4>
                             <h4 class="mb-2">Description:</h4>
                             <p class="mb-3">@Model.petDesc</p>
                             <div class="btnsHolder">
+
                                 @if (Model.petType == 0)
                                 {
-                                    <a href="@Url.Action("AdoptPet","Home",new { id = Model.petId})" class="btn btn-warning">Adopt Pet</a>
+                                    using (Html.BeginForm("AdoptPet", "Home", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="number" name="petId" hidden value="@Model.petId" />
+                                        <input type="number" name="customerId" hidden value="@(userData != null ? @userData.userId : 0)" />
+                                        <input type="number" name="adoptionType" hidden value="0" />
+                                        <input type="number" name="adoptionCost" hidden value="@Model.petCost" />
+                                        <button type="submit" class="btn btn-warning">Adopt Pet</button>
+                                    }
+
                                 }
-                                else { 
-                                    <a class="btn btn-warning">Claim Lost Pet</a>
+                                else
+                                {
+                                    using (Html.BeginForm("AdoptPet", "Home", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="number" name="petId" hidden value="@Model.petId" />
+                                        <input type="number" name="customerId" hidden value="@(userData != null ? @userData.userId : 0)" />
+                                        <input type="number" name="adoptionType" hidden value="1" />
+                                        <input type="number" name="adoptionCost" hidden value="@Model.petCost" />
+                                        <button type="submit" class="btn btn-warning">Claim Lost Pet</button>
+                                    }
                                 }
+
                             </div>
                         </div>
                     </div>
