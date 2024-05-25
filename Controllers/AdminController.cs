@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -24,6 +25,9 @@ namespace Pet_Adoption_System.Controllers
         List<Pet> PetList;
         List<foundPet> foundPetList;
         ColorAndCategoryComposite compositeClass;
+        List<Adoption> vrfAdoptions;
+        List<Adoption> unVrfAdoptions;
+        List<Review> reviewList;
         int categoriesCount;
         int petCount;
         public AdminController() {
@@ -304,6 +308,163 @@ namespace Pet_Adoption_System.Controllers
             sqcmd.ExecuteNonQuery();
             TempData["message"] = "<script> alert('Pet deleted successfully!')  </script>";
             conn.Close();
+        }
+        public ActionResult Adoptions() {
+            fetchVerifiedAdoptions();
+            fetchUnverifiedAdoptions();
+            adoptionsViewModel viewModel = new adoptionsViewModel();
+            viewModel.vrfAdoptionsList = vrfAdoptions;
+            viewModel.unVrfAdoptionsList= unVrfAdoptions;
+            return View(viewModel);
+        }
+        void fetchUnverifiedAdoptions() {
+            unVrfAdoptions = new List<Adoption>();
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 0", conn);
+            SqlDataReader sdr = sqcmd.ExecuteReader();
+            if (sdr.HasRows) {
+                while (sdr.Read()) {
+                    Adoption adp = new Adoption();
+                    adp.customer = new Customer();
+                    adp.pet = new Pet() ;
+                    adp.adoptionPayment = new Payment();
+                    adp.adoptionId = Convert.ToInt32(sdr["adp_id"]);
+                    adp.adoptionType = Convert.ToInt32(sdr["adp_type"]);
+                    adp.requestSubmittedAt = Convert.ToDateTime(sdr["req_submitted_at"]);
+                    adp.customer.custName = sdr["custName"].ToString();
+                    adp.customer.custPhone = sdr["custPhone"].ToString();
+                    adp.pet.petName = sdr["PetName"].ToString();
+                    adp.pet.petAge = Convert.ToInt32(sdr["petAge"]);
+                    adp.pet.petTitleImg = sdr["petTitleImg"].ToString();
+                    adp.adoptionPayment.amount = Convert.ToInt32(sdr["amount"]);
+                    adp.adoptionPayment.paymentScreenshot = sdr["paymentScreenshot"].ToString();
+                    unVrfAdoptions.Add(adp);
+                }
+            }
+            conn.Close();
+        }
+        void fetchVerifiedAdoptions() {
+            vrfAdoptions = new List<Adoption>();
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 1 order by a.adp_id desc", conn);
+            SqlDataReader sdr = sqcmd.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                while (sdr.Read())
+                {
+                    Adoption adp = new Adoption();
+                    adp.customer = new Customer();
+                    adp.pet = new Pet();
+                    adp.adoptionPayment = new Payment();
+                    adp.adoptionId = Convert.ToInt32(sdr["adp_id"]);
+                    adp.adoptionType = Convert.ToInt32(sdr["adp_type"]);
+                    adp.requestSubmittedAt = Convert.ToDateTime(sdr["req_submitted_at"]);
+                    adp.customer.custName = sdr["custName"].ToString();
+                    adp.customer.custPhone = sdr["custPhone"].ToString();
+                    adp.pet.petName = sdr["PetName"].ToString();
+                    adp.pet.petAge = Convert.ToInt32(sdr["petAge"]);
+                    adp.pet.petTitleImg = sdr["petTitleImg"].ToString();
+                    adp.adoptionPayment.amount = Convert.ToInt32(sdr["amount"]);
+                    adp.adoptionPayment.paymentScreenshot = sdr["paymentScreenshot"].ToString();
+                    vrfAdoptions.Add(adp);
+                }
+            }
+            conn.Close();
+        }
+        public ActionResult ReviewsVerification()
+        {
+            fetchunverifiedReview();
+            return View(reviewList);
+        }
+
+        public void fetchunverifiedReview()
+        {
+            try
+            {
+                reviewList = new List<Review>();
+                conn = provider.getConnection();
+                conn.Open();
+                sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime,u.reviewId from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=0", conn);
+                SqlDataReader sdr = sqcmd.ExecuteReader();
+                if (sdr.HasRows)
+                {
+                    while (sdr.Read())
+                    {
+                        Review rev = new Review();
+                        rev.reviewId = Convert.ToInt32(sdr["reviewId"]);
+                        rev.custname = sdr["custname"].ToString();
+                        rev.review = sdr["review"].ToString();
+                        rev.rvTime = Convert.ToDateTime(sdr["rvTime"]);
+
+                        reviewList.Add(rev);
+                    }
+                }
+                conn.Close();
+            }
+            catch (SqlException ex)
+            {
+                TempData["message"] = "<script> alert('An error has occured on server side')  <script>";
+            }
+        }
+        public ActionResult verifyreview(int id)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT review FROM userReviews WHERE reviewId=@ID", conn);
+            sqcmd.Parameters.AddWithValue("@ID", id);
+            object val = sqcmd.ExecuteScalar();
+            if (val != null)
+            {
+                Updatereview(id);
+
+            }
+            else
+            {
+                TempData["message"] = "<script> alert('No such review found!')  </script>";
+            }
+            conn.Close();
+            return RedirectToAction("ReviewsVerification");
+        }
+        void Updatereview(int id)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("UPDATE userReviews SET reviewStatus = 1 WHERE reviewId=@Id", conn);
+            sqcmd.Parameters.AddWithValue("@Id", id);
+            sqcmd.ExecuteNonQuery();
+            conn.Close();
+            TempData["message"] = "<script> alert('Review Status updated successfully!')  </script>";
+        }
+        void DeleteReview(int id)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("DELETE FROM userReviews WHERE reviewId IN ( SELECT u.reviewId FROM customersTbl c JOIN userReviews u ON c.custId = u.custId  WHERE u.reviewstatus = 0 AND u.reviewId = @id);", conn);
+            sqcmd.Parameters.AddWithValue("@id", id);
+            sqcmd.ExecuteNonQuery();
+            conn.Close();
+            TempData["message"] = "<script> alert('Review deleted successfully!') </script>";
+        }
+        public ActionResult DeleteReviews(int id)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("SELECT review FROM userReviews WHERE reviewId=@id", conn);
+            sqcmd.Parameters.AddWithValue("@id", id);
+            object val = sqcmd.ExecuteScalar();
+            if (val != null)
+            {
+                DeleteReview(id);
+
+            }
+            else
+            {
+                TempData["message"] = "<script> alert('No such review found!')  </script>";
+            }
+            conn.Close();
+            return RedirectToAction("ReviewsVerification");
         }
 
     }

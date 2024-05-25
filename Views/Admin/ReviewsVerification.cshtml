@@ -1,0 +1,65 @@
+﻿@model List<Pet_Adoption_System.Models.Review>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "ReviewsVerifications";
+}
+@Html.Raw(TempData["message"])
+<style>
+    /* Remove hover effect on Bootstrap card */
+    .card {
+        transition: none; /* Disable transition effects */
+    }
+
+        .card:hover {
+            box-shadow: none; /* Remove shadow on hover */
+            background-color: inherit; /* Keep the background color the same */
+        }
+</style>
+<div class="container my-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="order-title">Un-Verified Reviews</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table my-15">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th class="text-center">Review</th>
+                            <th>Date</th>
+                            <th>Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var singlereview in Model)
+                            {
+                                <tr>
+                                    <td>@singlereview.custname</td>
+                                    <td class="text-center text-secondary">
+                                        <span class="fs-5">&#8220;</span>
+                                        @singlereview.review
+                                        <span class="fs-5">&#8221;</span>
+                                    </td>
+                                    <td>@singlereview.rvTime</td>
+
+                                    <td>
+                                        <a href="@Url.Action("VerifyReview", "Admin", new { id = singlereview.reviewId})" class="me-2">
+                                            <i class="fa-solid fa-check"></i>
+                                        </a>
+                                        |
+                                        <a href="@Url.Action("DeleteReviews", "Admin", new { id = singlereview.reviewId})" class="ms-2">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -266,7 +266,7 @@ namespace Pet_Adoption_System.Controllers
                 //sqcmd.Parameters.AddWithValue("@INCOMINGPETID",adp.petId);
                 //object result = sqcmd.ExecuteScalar();
                 //conn.Close();
-                if (checkPetExistence(adp.petId))
+                if (checkPetExistence(adp.pet.petId))
                 {
                     //passing data(adoptionObject) to paymentView by serializing it
                     var adoptionJson = JsonConvert.SerializeObject(adp);
@@ -295,9 +295,9 @@ namespace Pet_Adoption_System.Controllers
         public ActionResult MakeAdoptionOrClaim(Adoption adp) {
             bool custExistence, petExistence;
             //checking for petExistence
-            petExistence = checkPetExistence(adp.petId);
+            petExistence = checkPetExistence(adp.pet.petId);
             //checking for customerExistence
-            custExistence = checkCustomerExistence(adp.customerId);
+            custExistence = checkCustomerExistence(adp.customer.custId);
             if (custExistence)
             {
                 if (petExistence)
@@ -314,8 +314,8 @@ namespace Pet_Adoption_System.Controllers
                     sqcmd.Parameters.AddWithValue("@paymntAmount", adp.adoptionCost);
                     sqcmd.Parameters.AddWithValue("@paymntScreenshot", imgName);
                     sqcmd.Parameters.AddWithValue("@paymentDateTime", DateTime.Now);
-                    sqcmd.Parameters.AddWithValue("@custId", adp.customerId);
-                    sqcmd.Parameters.AddWithValue("@petId", adp.petId);
+                    sqcmd.Parameters.AddWithValue("@custId", adp.customer.custId);
+                    sqcmd.Parameters.AddWithValue("@petId", adp.pet.petId);
                     sqcmd.Parameters.AddWithValue("@adp_Type", adp.adoptionType);
                     sqcmd.Parameters.AddWithValue("@adp_Status", 0);
                     sqcmd.CommandType= CommandType.StoredProcedure;
@@ -375,13 +375,14 @@ namespace Pet_Adoption_System.Controllers
                 reviewList = new List<Review>();
                 conn = provider.getConnection();
                 conn.Open();
-                sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=0", conn);
+                sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime,u.reviewId from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=1", conn);
                 SqlDataReader sdr = sqcmd.ExecuteReader();
                 if (sdr.HasRows)
                 {
                     while (sdr.Read())
                     {
                         Review rev = new Review();
+                        rev.reviewId = Convert.ToInt32(sdr["reviewId"]);
                         rev.custname = sdr["custname"].ToString();
                         rev.review = sdr["review"].ToString();
                         rev.rvTime = Convert.ToDateTime(sdr["rvTime"]);

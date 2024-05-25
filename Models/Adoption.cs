@@ -8,8 +8,10 @@ namespace Pet_Adoption_System.Models
     public class Adoption
     {
         public int adoptionId { get; set; }
-        public int customerId { get; set; }
-        public int petId { get; set; }
+        //public int customerId { get; set; }
+        public Customer customer { get; set; }
+        //public int petId { get; set; }
+        public Pet pet { get; set; }
         public int adoptionType { get; set; }
         public int adoptionCost { get; set; }
         public int adoptionStatus { get; set; }

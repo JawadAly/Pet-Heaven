@@ -59,8 +59,8 @@
                                     using (Html.BeginForm("AdoptPet", "Home", FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
-                                        <input type="number" name="petId" hidden value="@Model.petId" />
-                                        <input type="number" name="customerId" hidden value="@(userData != null ? @userData.userId : 0)" />
+                                        <input type="number" name="pet.petId" hidden value="@Model.petId" />
+                                        <input type="number" name="customer.custId" hidden value="@(userData != null ? @userData.userId : 0)" />
                                         <input type="number" name="adoptionType" hidden value="0" />
                                         <input type="number" name="adoptionCost" hidden value="@Model.petCost" />
                                         <button type="submit" class="btn btn-warning">Adopt Pet</button>
@@ -72,8 +72,8 @@
                                     using (Html.BeginForm("AdoptPet", "Home", FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
-                                        <input type="number" name="petId" hidden value="@Model.petId" />
-                                        <input type="number" name="customerId" hidden value="@(userData != null ? @userData.userId : 0)" />
+                                        <input type="number" name="pet.petId" hidden value="@Model.petId" />
+                                        <input type="number" name="customer.custId" hidden value="@(userData != null ? @userData.userId : 0)" />
                                         <input type="number" name="adoptionType" hidden value="1" />
                                         <input type="number" name="adoptionCost" hidden value="@Model.petCost" />
                                         <button type="submit" class="btn btn-warning">Claim Lost Pet</button>

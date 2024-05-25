@@ -26,8 +26,8 @@
                     @using (Html.BeginForm("MakeAdoptionOrClaim", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
-                        <input type="number" hidden name="customerId" value="@adoption.customerId">
-                        <input type="number" hidden name="petId" value="@adoption.petId">
+                        <input type="number" hidden name="customer.custId" value="@adoption.customer.custId">
+                        <input type="number" hidden name="pet.petId" value="@adoption.pet.petId">
                         <input type="number" hidden name="adoptionType" value="@adoption.adoptionType">
                         <input type="number" hidden name="adoptionCost" value="@adoption.adoptionCost">
                         <input type="file" class="form-control mb-3" name="adoptionPayment.paymentFile">

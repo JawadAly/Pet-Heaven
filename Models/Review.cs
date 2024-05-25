@@ -7,7 +7,7 @@ namespace Pet_Adoption_System.Models
 {
     public class Review
     {
-        public int revID { get; set; }
+        public int reviewId { get; set; }
         public int custID { get; set; }
         public string custname { get; set; }
         public DateTime rvTime { get; set; }

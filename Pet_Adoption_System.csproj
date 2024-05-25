@@ -130,6 +130,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Adoption.cs" />
+    <Compile Include="Models\adoptionsViewModel.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\ColorAndCategoryComposite.cs" />
@@ -154,6 +155,7 @@
     <Content Include="Content\paymentPanel.css" />
     <Content Include="Content\productView.css" />
     <Content Include="Content\reg.css" />
+    <Content Include="Content\adoptionsAdmin.css" />
     <Content Include="Content\userPanel.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -207,6 +209,8 @@
     <Content Include="Views\User\MyAdoptions.cshtml" />
     <Content Include="Views\Admin\Verifications.cshtml" />
     <Content Include="Views\Home\PaymentVeiw.cshtml" />
+    <Content Include="Views\Admin\Adoptions.cshtml" />
+    <Content Include="Views\Admin\ReviewsVerification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

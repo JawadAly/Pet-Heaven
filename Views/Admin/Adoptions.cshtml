@@ -1,0 +1,146 @@
+﻿@model Pet_Adoption_System.Models.adoptionsViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Adoptions";
+}
+@Html.Raw(TempData["message"])
+
+<div class="detailsHolder">
+    <div class="ordersPanel w-100 mb-3">
+        <h2 class="order-title">Adoption Requests</h2>
+        <div class="table-responsive">
+            <table class="table my-5">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Pet Name</th>
+                        <th>Pet Age</th>
+                        <th>Pet Image</th>
+                        <th>Adoption Type</th>
+                        <th>Request Submitted At</th>
+                        <th>Payment Amount</th>
+                        <th>Payment Screenshot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @if (Model.unVrfAdoptionsList != null)
+                        {
+                            foreach (var singleVals in Model.unVrfAdoptionsList)
+                            {
+                                <tr>
+                                    <td>@singleVals.customer.custName</td>
+                                    <td>@singleVals.customer.custPhone</td>
+                                    <td>@singleVals.pet.petName</td>
+                                    <td>@singleVals.pet.petAge</td>
+                                    <td>
+                                        <img src="~/images/@singleVals.pet.petTitleImg" alt="petImg" width="50" height="50"/>
+                                    </td>
+                                    <td>@(singleVals.adoptionType == 0 ? "Adoption" : "Claim")</td>
+                                    <td>@singleVals.requestSubmittedAt</td>
+                                    <td>@singleVals.adoptionPayment.amount</td>
+                                    <td>
+                                        <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" width="50" height="100" alt="petImg" />
+                                    </td>
+                                    <td>
+                                        <a href="">
+                                            
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="" class="me-2">
+                                            <i class="fa-solid fa-check"></i>
+                                        </a>
+                                        |
+                                        <a href="" class="ms-2">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else { 
+                            <tr>
+                                    No active adoptions/claim requests yet!
+                            </tr>
+                                
+                        }
+
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="ordersPanel w-100">
+        <h2 class="order-title">Successful Adoptions</h2>
+        <div class="table-responsive">
+            <table class="table my-5">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Pet Name</th>
+                        <th>Pet Age</th>
+                        <th>Pet Image</th>
+                        <th>Adoption Type</th>
+                        <th>Request Submitted At</th>
+                        <th>Payment Amount</th>
+                        <th>Payment Screenshot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.vrfAdoptionsList != null)
+                    {
+                        foreach (var singleVals in Model.vrfAdoptionsList)
+                        {
+                            <tr>
+                                <td>@singleVals.customer.custName</td>
+                                <td>@singleVals.customer.custPhone</td>
+                                <td>@singleVals.pet.petName</td>
+                                <td>@singleVals.pet.petAge</td>
+                                <td>
+                                    <img src="~/images/@singleVals.pet.petTitleImg" alt="petImg" width="50" height="50" />
+                                </td>
+                                <td>@(singleVals.adoptionType == 0 ? "Adoption" : "Claim")</td>
+                                <td>@singleVals.requestSubmittedAt</td>
+                                <td>@singleVals.adoptionPayment.amount</td>
+                                <td>
+                                    <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" width="50" height="100" alt="petImg" />
+                                </td>
+                                <td>
+                                    <a href="">
+
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="" class="me-2">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                    |
+                                    <a href="" class="ms-2">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            No active adoptions/claim requests yet!
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="footer w-100 p-3 fixed-bottom bg-dark">
+    <p class="text-center text-white">Copyright © 2022 | Js-Dev . All rights Reserved .</p>
+</div>
+
+
+
