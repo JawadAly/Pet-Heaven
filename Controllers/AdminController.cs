@@ -321,7 +321,7 @@ namespace Pet_Adoption_System.Controllers
             unVrfAdoptions = new List<Adoption>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 0", conn);
+            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.petId,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 0", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows) {
                 while (sdr.Read()) {
@@ -334,6 +334,7 @@ namespace Pet_Adoption_System.Controllers
                     adp.requestSubmittedAt = Convert.ToDateTime(sdr["req_submitted_at"]);
                     adp.customer.custName = sdr["custName"].ToString();
                     adp.customer.custPhone = sdr["custPhone"].ToString();
+                    adp.pet.petId = Convert.ToInt32(sdr["petId"]);
                     adp.pet.petName = sdr["PetName"].ToString();
                     adp.pet.petAge = Convert.ToInt32(sdr["petAge"]);
                     adp.pet.petTitleImg = sdr["petTitleImg"].ToString();
@@ -348,7 +349,7 @@ namespace Pet_Adoption_System.Controllers
             vrfAdoptions = new List<Adoption>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 1 order by a.adp_id desc", conn);
+            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.petId,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 1 order by a.adp_id desc", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows)
             {
@@ -363,6 +364,7 @@ namespace Pet_Adoption_System.Controllers
                     adp.requestSubmittedAt = Convert.ToDateTime(sdr["req_submitted_at"]);
                     adp.customer.custName = sdr["custName"].ToString();
                     adp.customer.custPhone = sdr["custPhone"].ToString();
+                    adp.pet.petId = Convert.ToInt32(sdr["petId"]);
                     adp.pet.petName = sdr["PetName"].ToString();
                     adp.pet.petAge = Convert.ToInt32(sdr["petAge"]);
                     adp.pet.petTitleImg = sdr["petTitleImg"].ToString();
@@ -372,6 +374,17 @@ namespace Pet_Adoption_System.Controllers
                 }
             }
             conn.Close();
+        }
+        public ActionResult ApproveAdoptionOrClaim(int id)
+        {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("update adoptions set adp_status = 1 where adp_id = @INCOMINGADPID;", conn);
+            sqcmd.Parameters.AddWithValue("@INCOMINGADPID", id);
+            sqcmd.ExecuteNonQuery();
+            TempData["message"] = "<script> alert('Adoptions Successfully approved!')  </script>";
+            conn.Close();
+            return RedirectToAction("Adoptions");
         }
         public ActionResult ReviewsVerification()
         {
@@ -466,6 +479,7 @@ namespace Pet_Adoption_System.Controllers
             conn.Close();
             return RedirectToAction("ReviewsVerification");
         }
+        
 
     }
 }

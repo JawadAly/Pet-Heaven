@@ -24,49 +24,49 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @if (Model.unVrfAdoptionsList != null)
+                    @if (Model.unVrfAdoptionsList != null)
+                    {
+                        foreach (var singleVals in Model.unVrfAdoptionsList)
                         {
-                            foreach (var singleVals in Model.unVrfAdoptionsList)
-                            {
-                                <tr>
-                                    <td>@singleVals.customer.custName</td>
-                                    <td>@singleVals.customer.custPhone</td>
-                                    <td>@singleVals.pet.petName</td>
-                                    <td>@singleVals.pet.petAge</td>
-                                    <td>
-                                        <img src="~/images/@singleVals.pet.petTitleImg" alt="petImg" width="50" height="50"/>
-                                    </td>
-                                    <td>@(singleVals.adoptionType == 0 ? "Adoption" : "Claim")</td>
-                                    <td>@singleVals.requestSubmittedAt</td>
-                                    <td>@singleVals.adoptionPayment.amount</td>
-                                    <td>
-                                        <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" width="50" height="100" alt="petImg" />
-                                    </td>
-                                    <td>
-                                        <a href="">
-                                            
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="" class="me-2">
-                                            <i class="fa-solid fa-check"></i>
-                                        </a>
-                                        |
-                                        <a href="" class="ms-2">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else { 
                             <tr>
-                                    No active adoptions/claim requests yet!
+                                <td>@singleVals.customer.custName</td>
+                                <td>@singleVals.customer.custPhone</td>
+                                <td>
+                                    <a href="@Url.Action("PetView", "Home", new {id = singleVals.pet.petId})">
+                                        @singleVals.pet.petName
+                                    </a>
+                                </td>
+                                <td>@singleVals.pet.petAge</td>
+                                <td>
+                                    <img src="~/images/@singleVals.pet.petTitleImg" alt="petImg" width="50" height="50" />
+                                </td>
+                                <td>@(singleVals.adoptionType == 0 ? "Adoption" : "Claim")</td>
+                                <td>@singleVals.requestSubmittedAt</td>
+                                <td>@singleVals.adoptionPayment.amount</td>
+                                <td>
+                                    <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" id="thumbnail" width="50" height="100" alt="petImg" />
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("ApproveAdoptionOrClaim","Admin", new { id = singleVals.adoptionId})" class="me-2">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                    |
+                                    <a href="@Url.Action("DeleteAdoptionOrClaim","Admin", new { id = singleVals.adoptionId})" class="ms-2">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
                             </tr>
-                                
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            No active adoptions/claim requests yet!
+                        </tr>
 
-                    </tbody>
+                    }
+
+                </tbody>
             </table>
         </div>
     </div>
@@ -96,7 +96,11 @@
                             <tr>
                                 <td>@singleVals.customer.custName</td>
                                 <td>@singleVals.customer.custPhone</td>
-                                <td>@singleVals.pet.petName</td>
+                                <td>
+                                    <a href="@Url.Action("PetView", "Home", new {id = singleVals.pet.petId})">
+                                        @singleVals.pet.petName
+                                    </a>
+                                </td>
                                 <td>@singleVals.pet.petAge</td>
                                 <td>
                                     <img src="~/images/@singleVals.pet.petTitleImg" alt="petImg" width="50" height="50" />
@@ -105,12 +109,7 @@
                                 <td>@singleVals.requestSubmittedAt</td>
                                 <td>@singleVals.adoptionPayment.amount</td>
                                 <td>
-                                    <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" width="50" height="100" alt="petImg" />
-                                </td>
-                                <td>
-                                    <a href="">
-
-                                    </a>
+                                    <img src="~/images/@singleVals.adoptionPayment.paymentScreenshot" id="thumbnail" width="50" height="100" alt="petImg" />
                                 </td>
                                 <td>
                                     <a href="" class="me-2">
@@ -136,6 +135,13 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
 </div>
 
 <div class="footer w-100 p-3 fixed-bottom bg-dark">
