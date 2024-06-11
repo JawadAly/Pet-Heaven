@@ -51,6 +51,9 @@
                         <li>
                             <a>@Html.ActionLink("Account", "Login", "Account")</a>
                         </li>
+                        <li>
+                            <a href="@Url.Action("About","Home")">About</a>
+                        </li>
 
                         @if (userData != null)
                         {
@@ -90,6 +93,8 @@
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @Scripts.Render("~/bundles/jquery")
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwPKmTYzvYClhZK3Ucvl_xUqJHdRMZCu8&callback=myMap"></script>
+    <script src="~/Scripts/locationScript.js"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     @RenderSection("scripts", required: false)
 </body>

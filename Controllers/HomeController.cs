@@ -38,6 +38,9 @@ namespace Pet_Adoption_System.Controllers
             return View(composite);
         }
 
+        public ActionResult About() {
+            return View();
+        }
         //public ActionResult Categories()
         //{
         //    fetchCategories();

@@ -1,6 +1,76 @@
-﻿
+﻿@model List<Pet_Adoption_System.Models.Adoption>
 @{
     ViewBag.Title = "My Adoptions";
 }
+@Html.Raw(TempData["message"])
+<style>
+    /* Remove hover effect on Bootstrap card */
+    .card {
+        transition: none; /* Disable transition effects */
+    }
 
-<h1 class="mt-5 pt-5">My Adoptions</h1>
+        .card:hover {
+            box-shadow: none; /* Remove shadow on hover */
+            background-color: inherit; /* Keep the background color the same */
+        }
+
+    .mt-custom {
+        margin-top: 80px; /* Adjust the value as needed */
+    }
+
+    .order-title {
+        color: #454545;
+    }
+</style>
+<div class="container mt-5">
+    <div class="card mt-custom">
+        <div class="card-header">
+            <h2 class="order-title">My Adoptions</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table my-15">
+                    <thead>
+                        <tr>
+                            <th>Pet Name</th>
+                            <th>Pet Age</th>
+                            <th>Pet Image</th>
+                            <th>Adoption Type</th>
+                            <th>Adoption Status</th>
+                            <th>Adoption At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count != 0)
+                        {
+                            foreach (var singleradoption in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("PetView", "Home", new { id = singleradoption.pet.petId })">
+                                            @singleradoption.pet.petName
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @singleradoption.pet.petAge
+                                    </td>
+                                    <td>
+                                        <img src="~/images/@singleradoption.pet.petTitleImg" alt="petImg" width="50" height="50" />
+                                    </td>
+                                    <td>@(singleradoption.adoptionType == 0 ? "Adoption" : "Claim")</td>
+                                    <td><span class="badge rounded-pill text-bg-warning fw-medium">@(singleradoption.adoptionStatus == 1 ? "Alloted" : "Not Alloted ")</span></td>
+                                    <td>@singleradoption.requestSubmittedAt</td>
+                                </tr>
+                            }
+                        }
+                        else { 
+                            <tr>
+                                <td colspan="6" class="text-center text-danger">No Adoptions to show!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

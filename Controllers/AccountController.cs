@@ -31,7 +31,7 @@ namespace Pet_Adoption_System.Controllers
         {
             if (user.userName == string.Empty || user.userPass == string.Empty)
             {
-                TempData["message"] = "<script> alert('Please fill out the required fields!')  <script>";
+                TempData["message"] = "<script> alert('Please fill out the required fields!')  </script>";
             }
             else {
                 conn = provider.getConnection();
@@ -46,22 +46,20 @@ namespace Pet_Adoption_System.Controllers
                     user.userId = Convert.ToInt32(sdr["userId"]);
                     if (user.userType == 0)
                     {
-                        //TempData["userInfo"] = user;
                         Session["userInfo"] = user;
                         return RedirectToAction("Index", "Home");
                     }
                     else {
-                        //TempData["userInfo"] = user;
                         Session["userInfo"] = user;
                         return RedirectToAction("Index","Admin");
                     }
                 }
                 else {
-                    TempData["message"] = "<script> alert('Invalid Credentials!')  <script>";
+                    TempData["message"] = "<script> alert('Invalid Credentials!')  </script>";
+                    return RedirectToAction("Login");
                 }
-                conn.Close();
             }
-            
+            conn.Close();
             return View();
         }
         public ActionResult Register() {
@@ -85,7 +83,7 @@ namespace Pet_Adoption_System.Controllers
             sqcmd.Parameters.AddWithValue("@custAge", cust.custAge);
             sqcmd.ExecuteNonQuery();
             conn.Close();
-            TempData["message"] = "<script> alert('Customer Registered Successfuly!')  <script>";
+            TempData["message"] = "<script> alert('Customer Registered Successfuly!')  </script>";
             return RedirectToAction("Login");
         }
 

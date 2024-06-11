@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using Pet_Adoption_System.DbConnection;
 using Pet_Adoption_System.Models;
+using System.Xml.Linq;
 
 namespace Pet_Adoption_System.Controllers
 {
@@ -20,29 +21,33 @@ namespace Pet_Adoption_System.Controllers
         List<Category> categoriesList;
         List<Color> colorsList;
         ColorAndCategoryComposite compositeClass;
+        User user;
+        List<Adoption> adoptions;
         public UserController() {
             provider = new ConnectionProvider();
         }
         public ActionResult Index()
         {
-            //if (Session["userInfo"] != null)
-            //{
-            //    return View();
-            //}
-            //else { 
-            //    return RedirectToAction("Login", "Account");
-            //}
-            return View();
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType == 0)
+            {
+               return View();    
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         public ActionResult SubmitReview() {
-            //if (Session["userInfo"] != null)
-            //{
-            //    return View();
-            //}
-            //else { 
-            //    return RedirectToAction("Login", "Account");
-            //}
-            return View();
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType == 0)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
         }
         [HttpPost]
@@ -62,19 +67,20 @@ namespace Pet_Adoption_System.Controllers
             return View();
         }
         public ActionResult ReportFoundPet() {
-            //if (Session["userInfo"] != null)
-            //{
-            //    return View();
-            //}
-            //else { 
-            //    return RedirectToAction("Login", "Account");
-            //}
-            fetchColors();
-            fetchCategories();
-            compositeClass = new ColorAndCategoryComposite();
-            compositeClass.catgrsList = categoriesList;
-            compositeClass.clrsList = colorsList;
-            return View(compositeClass);
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType == 0)
+            {
+                fetchColors();
+                fetchCategories();
+                compositeClass = new ColorAndCategoryComposite();
+                compositeClass.catgrsList = categoriesList;
+                compositeClass.clrsList = colorsList;
+                return View(compositeClass);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         [HttpPost]
         public ActionResult ReportFoundPet(Pet pet)
@@ -180,7 +186,47 @@ namespace Pet_Adoption_System.Controllers
             conn.Close();
         }
         public ActionResult MyAdoptions() {
-            return View();
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType == 0)
+            {
+                //Customer cust = Session["userInfo"] as Customer;
+                fetchmyadoption(user.userId);
+                return View(adoptions);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+        public void fetchmyadoption(int id)
+        {
+            adoptions = new List<Adoption>();
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("select p.petName,p.petAge,p.petTitleImg,p.petId,a.adp_type,a.adp_status,a.req_submitted_at,a.cust_id from pets p join adoptions a on p.petId = a.pet_id where a.cust_id = @id", conn);
+            sqcmd.Parameters.AddWithValue("@id", id);
+            SqlDataReader sdr = sqcmd.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                while (sdr.Read())
+                {
+                    Adoption adp = new Adoption();
+                    adp.customer = new Customer();
+                    adp.pet = new Pet();
+                    adp.pet.petName = sdr["PetName"].ToString();
+                    adp.pet.petAge = Convert.ToInt32(sdr["petAge"]);
+                    adp.pet.petTitleImg = sdr["petTitleImg"].ToString();
+                    adp.pet.petId = Convert.ToInt32(sdr["petId"]);
+                    adp.adoptionType = Convert.ToInt32(sdr["adp_type"]);
+                    adp.adoptionStatus = Convert.ToInt32(sdr["adp_status"]);
+                    adp.requestSubmittedAt = Convert.ToDateTime(sdr["req_submitted_at"]);
+                    adp.customer.custId = Convert.ToInt32(sdr["cust_id"]);
+
+                    adoptions.Add(adp);
+
+                }
+            }
+            conn.Close();
         }
     }
 }

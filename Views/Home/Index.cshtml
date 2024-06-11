@@ -65,7 +65,7 @@
         <h3 class="text-center categoriesHeading pb-3">Our Pets</h3>
         <div class="categorizeHolder d-flex align-items-center">
             <div class="row w-100">
-                @if (Model.catgrsList.Count > 0)
+                @if (Model.petList.Count > 0)
                 {
                     foreach (var singlePet in Model.petList)
                     {
@@ -87,7 +87,7 @@
                 }
                 else
                 {
-                    <h5>No Pets Listed !</h5>
+                    <h3 class="text-center">No Pets Listed !</h3>
                 }
             </div>
 
@@ -123,7 +123,7 @@
                     }
                 }
                 else { 
-                    <h5 class="text-center">No reviews to show!</h5>
+                    <h3 class="text-center">No reviews to show!</h3>
                 }
             </div>
 

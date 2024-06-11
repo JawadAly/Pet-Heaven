@@ -28,6 +28,7 @@ namespace Pet_Adoption_System.Controllers
         List<Adoption> vrfAdoptions;
         List<Adoption> unVrfAdoptions;
         List<Review> reviewList;
+        User user;
         int categoriesCount;
         int petCount;
         public AdminController() {
@@ -35,16 +36,31 @@ namespace Pet_Adoption_System.Controllers
         }
         public ActionResult Index()
         {
-            fetchCategories();
-            fetchPets();
-            ViewBag.categCount = categoriesCount;
-            ViewBag.PetCount = petCount;
-            return View();
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchCategories();
+                fetchPets();
+                ViewBag.categCount = categoriesCount;
+                ViewBag.PetCount = petCount;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         public ActionResult Categories() {
-            
-            fetchCategories();
-            return View(categoriesList);  
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchCategories();
+                return View(categoriesList);     
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         [HttpPost]
         public ActionResult Categories(Category category)
@@ -105,7 +121,7 @@ namespace Pet_Adoption_System.Controllers
             colorsList = new List<Color>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("SELECT * FROM colors", conn);
+            sqcmd = new SqlCommand("select * from viewColors", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows)
             {
@@ -121,14 +137,22 @@ namespace Pet_Adoption_System.Controllers
         }
         public ActionResult Pets()
         {
-            fetchColors();
-            fetchCategories();
-            fetchPets();
-            compositeClass = new ColorAndCategoryComposite();
-            compositeClass.catgrsList = categoriesList;
-            compositeClass.clrsList = colorsList;
-            compositeClass.petList = PetList;
-            return View(compositeClass);
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchColors();
+                fetchCategories();
+                fetchPets();
+                compositeClass = new ColorAndCategoryComposite();
+                compositeClass.catgrsList = categoriesList;
+                compositeClass.clrsList = colorsList;
+                compositeClass.petList = PetList;
+                return View(compositeClass);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         [HttpPost]
         public ActionResult Pets(Pet pet)
@@ -182,7 +206,7 @@ namespace Pet_Adoption_System.Controllers
                 PetList = new List<Pet>();
                 conn = provider.getConnection();
                 conn.Open();
-                string query = "SELECT * FROM pets";
+                string query = "select * from viewPets";
                 sqcmd = new SqlCommand(query, conn);
                 SqlDataReader sdr = sqcmd.ExecuteReader();
                 if (sdr.HasRows)
@@ -230,14 +254,23 @@ namespace Pet_Adoption_System.Controllers
             }
         }
         public ActionResult Verifications() {
-            fetchUnverifiedPets();
-            return View(foundPetList);
+
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchUnverifiedPets();
+                return View(foundPetList);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         public void fetchUnverifiedPets() {
             foundPetList = new List<foundPet>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("select c.custName,c.custEmail,c.custAddress,c.custPhone,p.petId,p.petName from customersTbl c join CustReportedPets crp on c.custId = crp.customerId join pets p on crp.petId = p.petId where p.petStatus = 0", conn);
+            sqcmd = new SqlCommand("select * from veiwUnVerifiedPets;", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows) {
                 while (sdr.Read()) {
@@ -310,18 +343,26 @@ namespace Pet_Adoption_System.Controllers
             conn.Close();
         }
         public ActionResult Adoptions() {
-            fetchVerifiedAdoptions();
-            fetchUnverifiedAdoptions();
-            adoptionsViewModel viewModel = new adoptionsViewModel();
-            viewModel.vrfAdoptionsList = vrfAdoptions;
-            viewModel.unVrfAdoptionsList= unVrfAdoptions;
-            return View(viewModel);
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchVerifiedAdoptions();
+                fetchUnverifiedAdoptions();
+                adoptionsViewModel viewModel = new adoptionsViewModel();
+                viewModel.vrfAdoptionsList = vrfAdoptions;
+                viewModel.unVrfAdoptionsList= unVrfAdoptions;
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
         void fetchUnverifiedAdoptions() {
             unVrfAdoptions = new List<Adoption>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.petId,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 0", conn);
+            sqcmd = new SqlCommand("select * from veiwUnVerifiedAdoptions", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows) {
                 while (sdr.Read()) {
@@ -349,7 +390,7 @@ namespace Pet_Adoption_System.Controllers
             vrfAdoptions = new List<Adoption>();
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("select c.custName,c.custPhone,p.petId,p.PetName,p.petAge,p.petTitleImg,a.adp_id,a.adp_type,a.req_submitted_at,pm.amount,pm.paymentScreenshot from customersTbl c join adoptions a on c.custId = a.cust_id join pets p on p.petId = a.pet_id join payments pm on pm.payment_id = a.payment_id where a.adp_status = 1 order by a.adp_id desc", conn);
+            sqcmd = new SqlCommand("select * from veiwVerifiedAdoptions order by adp_id desc", conn);
             SqlDataReader sdr = sqcmd.ExecuteReader();
             if (sdr.HasRows)
             {
@@ -379,17 +420,37 @@ namespace Pet_Adoption_System.Controllers
         {
             conn = provider.getConnection();
             conn.Open();
-            sqcmd = new SqlCommand("update adoptions set adp_status = 1 where adp_id = @INCOMINGADPID;", conn);
-            sqcmd.Parameters.AddWithValue("@INCOMINGADPID", id);
+            sqcmd = new SqlCommand("verifyAdoptionAlongWithPetStatusDown", conn);
+            sqcmd.Parameters.AddWithValue("@adoptionId", id);
+            sqcmd.CommandType = CommandType.StoredProcedure;
             sqcmd.ExecuteNonQuery();
             TempData["message"] = "<script> alert('Adoptions Successfully approved!')  </script>";
             conn.Close();
             return RedirectToAction("Adoptions");
         }
+        public ActionResult DeleteAdoptionOrClaim(int id) {
+            conn = provider.getConnection();
+            conn.Open();
+            sqcmd = new SqlCommand("deleteAdoptionAlongWithPayment", conn);
+            sqcmd.Parameters.AddWithValue("@adoption_id",id);
+            sqcmd.CommandType = CommandType.StoredProcedure;
+            sqcmd.ExecuteNonQuery();
+            TempData["message"] = "<script> alert('Adoptions refused successfully!')  </script>";
+            conn.Close();
+            return RedirectToAction("Adoptions");
+        }
         public ActionResult ReviewsVerification()
         {
-            fetchunverifiedReview();
-            return View(reviewList);
+            user = Session["userInfo"] as User;
+            if (user != null && user.userType != 0)
+            {
+                fetchunverifiedReview();
+                return View(reviewList);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         public void fetchunverifiedReview()
@@ -399,7 +460,8 @@ namespace Pet_Adoption_System.Controllers
                 reviewList = new List<Review>();
                 conn = provider.getConnection();
                 conn.Open();
-                sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime,u.reviewId from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=0", conn);
+                //sqcmd = new SqlCommand("select c.custName,u.review,u.rvtime,u.reviewId from customersTbl c join userReviews u on c.custId=u.custId where u.reviewstatus=0", conn);
+                sqcmd = new SqlCommand("select * from viewUnverifiedReveiws", conn);
                 SqlDataReader sdr = sqcmd.ExecuteReader();
                 if (sdr.HasRows)
                 {
